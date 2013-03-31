@@ -1,4 +1,7 @@
 package Test::Kwalitee;
+{
+  $Test::Kwalitee::VERSION = '1.02';
+}
 
 use Cwd;
 use Test::Builder;
@@ -8,7 +11,6 @@ use strict;
 use warnings;
 
 use vars qw( $Test $VERSION );
-$VERSION = '1.01';
 
 BEGIN { $Test = Test::Builder->new() }
 
