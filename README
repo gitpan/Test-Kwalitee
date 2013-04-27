@@ -1,11 +1,9 @@
 
 
 This archive contains the distribution Test-Kwalitee,
-version 1.02:
+version 1.03:
 
-  or even within your own organization
--- testing its Kwalitee before creating a release can help you improve your
-quality as well.
+  test the Kwalitee of a distribution before you release it
 
 This software is copyright (c) 2005 by chromatic.
 

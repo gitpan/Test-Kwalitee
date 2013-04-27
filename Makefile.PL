@@ -2,14 +2,14 @@
 use strict;
 use warnings;
 
-use 5.006002;
+use 5.006;
 
 use ExtUtils::MakeMaker 6.30;
 
 
 
 my %WriteMakefileArgs = (
-  "ABSTRACT" => "or even within your own organization\n-- testing its Kwalitee before creating a release can help you improve your\nquality as well.",
+  "ABSTRACT" => "test the Kwalitee of a distribution before you release it",
   "AUTHOR" => "chromatic <chromatic\@wgz.org>",
   "BUILD_REQUIRES" => {},
   "CONFIGURE_REQUIRES" => {
@@ -20,11 +20,20 @@ my %WriteMakefileArgs = (
   "LICENSE" => "perl",
   "NAME" => "Test::Kwalitee",
   "PREREQ_PM" => {
-    "Module::CPANTS::Analyse" => "0.82",
-    "Test::Simple" => "0.47"
+    "Cwd" => 0,
+    "Module::CPANTS::Analyse" => "0.87",
+    "Test::Builder" => 0,
+    "strict" => 0,
+    "vars" => 0,
+    "warnings" => 0
   },
-  "TEST_REQUIRES" => {},
-  "VERSION" => "1.02",
+  "TEST_REQUIRES" => {
+    "File::Find" => 0,
+    "File::Temp" => 0,
+    "Test::CheckDeps" => "0.002",
+    "Test::More" => "0.88"
+  },
+  "VERSION" => "1.03",
   "test" => {
     "TESTS" => "t/*.t"
   }

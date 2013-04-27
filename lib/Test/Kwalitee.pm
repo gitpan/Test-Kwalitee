@@ -1,14 +1,19 @@
+use strict;
+use warnings;
 package Test::Kwalitee;
 {
-  $Test::Kwalitee::VERSION = '1.02';
+  $Test::Kwalitee::VERSION = '1.03';
 }
+# git description: v1.02-15-gb508671
+
+BEGIN {
+  $Test::Kwalitee::AUTHORITY = 'cpan:CHROMATIC';
+}
+# ABSTRACT: test the Kwalitee of a distribution before you release it
 
 use Cwd;
 use Test::Builder;
-use Module::CPANTS::Analyse;
-
-use strict;
-use warnings;
+use Module::CPANTS::Analyse 0.87;
 
 use vars qw( $Test $VERSION );
 
@@ -89,11 +94,7 @@ sub import
         next if $generator =~ /CPAN$/;
         next if $generator =~ /Authors$/;
 
-        # no distname, so no warnings here
-        {
-            local $^W;
-            $generator->analyse($analyzer);
-        }
+        $generator->analyse($analyzer);
 
         for my $indicator (@{ $generator->kwalitee_indicators() })
         {
@@ -106,11 +107,23 @@ sub import
 }
 
 1;
+
 __END__
+
+=pod
+
+=encoding utf-8
+
+=for :stopwords chromatic Gavin Sherlock <sherlock@cpan.org> Karen Etheridge
+<ether@cpan.org> CPANTS extractable changelog libs Klausner Dolan
 
 =head1 NAME
 
-  Test::Kwalitee - test the Kwalitee of a distribution before you release it
+Test::Kwalitee - test the Kwalitee of a distribution before you release it
+
+=head1 VERSION
+
+version 1.03
 
 =head1 SYNOPSIS
 
@@ -163,8 +176,6 @@ To disable a test, pass its name with a leading minus (C<->) to C<import()>:
       );
   };
 
-
-
 As of version 1.00, the tests include:
 
 =over 4
@@ -177,19 +188,19 @@ Is the distribution extractable?
 
 Does the distribution have a F<README> file?
 
-=item * have_manifest
+=item * has_manifest
 
 Does the distribution have a F<MANIFEST>?
 
-=item * have_meta_yml
+=item * has_meta_yml
 
 Does the distribution have a F<META.yml> file?
 
-=item * have_buildtool
+=item * has_buildtool
 
 Does the distribution have a build tool file?
 
-=item * have_changelog
+=item * has_changelog
 
 Does the distribution have a changelog?
 
@@ -197,7 +208,7 @@ Does the distribution have a changelog?
 
 Does the distribution have no symlinks?
 
-=item * have_tests
+=item * has_tests
 
 Does the distribution have tests?
 
@@ -213,29 +224,51 @@ Does the distribution have no POD errors?
 
 Does the distribution files all use strict?
 
-=item * have_test_pod
+=item * has_test_pod
 
 Does the distribution have a POD test file?
 
-=item * have_test_pod_coverage
+=item * has_test_pod_coverage
 
 Does the distribution have a POD-coverage test file?
 
+=for Pod::Coverage has_buildtool has_changelog has_manifest has_meta_yml has_test_pod has_test_pod_coverage has_tests
+
 =back
 
-=head1 AUTHOR
-
-chromatic, E<lt>chromatic at wgz dot orgE<gt>
+=head1 ACKNOWLEDGEMENTS
 
 With thanks to CPANTS and Thomas Klausner, as well as test tester Chris Dolan.
 
-=head1 BUGS
+=head1 SEE ALSO
 
-No known bugs.
+L<Module::CPANTS::Analyse>
 
-=head1 COPYRIGHT
+L<Test::Kwalitee::Extra>
 
-Copyright (c) 2005 - 2008, chromatic.  Some rights reserved.
+=head1 AUTHOR
 
-This module is free software; you can use, redistribute, and modify it under
-the same terms as Perl 5.8.x.
+chromatic <chromatic@wgz.org>
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2005 by chromatic.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
+
+=head1 CONTRIBUTORS
+
+=over 4
+
+=item *
+
+Gavin Sherlock <sherlock@cpan.org>
+
+=item *
+
+Karen Etheridge <ether@cpan.org>
+
+=back
+
+=cut
