@@ -51,14 +51,14 @@
             "File::Find" : "0",
             "File::Temp" : "0",
             "Test::CheckDeps" : "0.002",
-            "Test::More" : "0.88"
+            "Test::More" : "0.94"
          }
       }
    },
    "provides" : {
       "Test::Kwalitee" : {
          "file" : "lib/Test/Kwalitee.pm",
-         "version" : "1.03"
+         "version" : "1.04"
       }
    },
    "release_status" : "stable",
@@ -74,7 +74,7 @@
          "web" : "https://github.com/karenetheridge/Test-Kwalitee"
       }
    },
-   "version" : "1.03",
+   "version" : "1.04",
    "x_Dist_Zilla" : {
       "perl" : {
          "version" : "5.017011"
@@ -163,12 +163,12 @@
          {
             "class" : "Dist::Zilla::Plugin::Test::Compile",
             "name" : "@Author::ETHER/Test::Compile",
-            "version" : "2.001"
+            "version" : "2.002"
          },
          {
             "class" : "Dist::Zilla::Plugin::Test::CheckDeps",
             "name" : "@Author::ETHER/Test::CheckDeps",
-            "version" : "0.005"
+            "version" : "0.006"
          },
          {
             "class" : "Dist::Zilla::Plugin::NoTabsTests",

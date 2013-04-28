@@ -2,9 +2,9 @@ use strict;
 use warnings;
 package Test::Kwalitee;
 {
-  $Test::Kwalitee::VERSION = '1.03';
+  $Test::Kwalitee::VERSION = '1.04';
 }
-# git description: v1.02-15-gb508671
+# git description: v1.03-1-g220580e
 
 BEGIN {
   $Test::Kwalitee::AUTHORITY = 'cpan:CHROMATIC';
@@ -123,7 +123,7 @@ Test::Kwalitee - test the Kwalitee of a distribution before you release it
 
 =head1 VERSION
 
-version 1.03
+version 1.04
 
 =head1 SYNOPSIS
 
