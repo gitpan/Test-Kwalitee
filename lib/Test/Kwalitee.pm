@@ -2,9 +2,9 @@ use strict;
 use warnings;
 package Test::Kwalitee;
 {
-  $Test::Kwalitee::VERSION = '1.05';
+  $Test::Kwalitee::VERSION = '1.06';
 }
-# git description: v1.04-9-g18e3824
+# git description: v1.05-3-gcc0c7ac
 
 BEGIN {
   $Test::Kwalitee::AUTHORITY = 'cpan:CHROMATIC';
@@ -12,7 +12,7 @@ BEGIN {
 # ABSTRACT: test the Kwalitee of a distribution before you release it
 
 use Cwd;
-use Test::Builder 0.88;
+use Test::Builder;
 use Module::CPANTS::Analyse 0.87;
 
 use vars qw( $Test $VERSION );
@@ -49,8 +49,13 @@ BEGIN
         my $sub = sub
         {
             my ($dist, $metric) = @_;
-            $Test->ok( $metric->{code}->( $dist ), $subname, $diagnostic ) ||
-                $Test->diag( @{ $metric }{qw( remedy error )} );
+            if (not $Test->ok( $metric->{code}->( $dist ), $subname))
+            {
+                $Test->diag('Error: ', $metric->{error});
+                $Test->diag('Details: ', $dist->{error}{$subname})
+                    if defined $dist->{error} and defined $dist->{error}{$subname};
+                $Test->diag('Remedy: ', $metric->{remedy});
+            }
         };
 
         no strict 'refs';
@@ -81,6 +86,8 @@ sub import
         }
     }
 
+    $Test->plan( tests => scalar keys %run_tests );
+
     my $analyzer = Module::CPANTS::Analyse->new({
         distdir => $args{basedir},
         dist    => $args{basedir},
@@ -104,7 +111,6 @@ sub import
     }
 }
 
-END { $Test->done_testing }
 
 1;
 
@@ -123,7 +129,7 @@ Test::Kwalitee - test the Kwalitee of a distribution before you release it
 
 =head1 VERSION
 
-version 1.05
+version 1.06
 
 =head1 SYNOPSIS
 

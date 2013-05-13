@@ -22,7 +22,7 @@ my %WriteMakefileArgs = (
   "PREREQ_PM" => {
     "Cwd" => 0,
     "Module::CPANTS::Analyse" => "0.87",
-    "Test::Builder" => "0.88",
+    "Test::Builder" => 0,
     "strict" => 0,
     "vars" => 0,
     "warnings" => 0
@@ -35,7 +35,7 @@ my %WriteMakefileArgs = (
     "Test::More" => "0.94",
     "Test::Tester" => "0.108"
   },
-  "VERSION" => "1.05",
+  "VERSION" => "1.06",
   "test" => {
     "TESTS" => "t/*.t"
   }

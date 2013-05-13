@@ -26,11 +26,11 @@ no_index:
 provides:
   Test::Kwalitee:
     file: lib/Test/Kwalitee.pm
-    version: 1.05
+    version: 1.06
 requires:
   Cwd: 0
   Module::CPANTS::Analyse: 0.87
-  Test::Builder: 0.88
+  Test::Builder: 0
   perl: 5.006
   strict: 0
   vars: 0
@@ -39,7 +39,7 @@ resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Test-Kwalitee
   homepage: https://github.com/karenetheridge/Test-Kwalitee
   repository: https://github.com/karenetheridge/Test-Kwalitee.git
-version: 1.05
+version: 1.06
 x_Dist_Zilla:
   perl:
     version: 5.017011

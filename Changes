@@ -1,5 +1,11 @@
 Revision history for Test-Kwalitee
 
+1.06      2013-05-13 14:15:33 PDT-0700 (Karen Etheridge)
+    - restore previous behaviour of plan()ing in import, to unbreak some
+      dists that didn't follow the docs (which in this case is ok since it's a
+      horrible idea for a Test module to plan itself anyway) (v1.05)
+    - more diagnostic data is printed when a test fails (RT#85107)
+
 1.05      2013-05-12 17:17:32 PDT-0700 (Karen Etheridge)
     - more rigorous testing of output; (in order to make this possible) now we
       do END { done_testing } instead of planning a test count
