@@ -2,9 +2,9 @@ use strict;
 use warnings;
 package Test::Kwalitee;
 {
-  $Test::Kwalitee::VERSION = '1.04';
+  $Test::Kwalitee::VERSION = '1.05';
 }
-# git description: v1.03-1-g220580e
+# git description: v1.04-9-g18e3824
 
 BEGIN {
   $Test::Kwalitee::AUTHORITY = 'cpan:CHROMATIC';
@@ -12,7 +12,7 @@ BEGIN {
 # ABSTRACT: test the Kwalitee of a distribution before you release it
 
 use Cwd;
-use Test::Builder;
+use Test::Builder 0.88;
 use Module::CPANTS::Analyse 0.87;
 
 use vars qw( $Test $VERSION );
@@ -86,9 +86,7 @@ sub import
         dist    => $args{basedir},
     });
 
-    $Test->plan( tests => scalar keys %run_tests );
-
-    for my $generator (@{ $analyzer->mck()->generators() } )
+    for my $generator (sort { $a cmp $b } @{ $analyzer->mck()->generators() } )
     {
         next if $generator =~ /Unpack/;
         next if $generator =~ /CPAN$/;
@@ -96,7 +94,7 @@ sub import
 
         $generator->analyse($analyzer);
 
-        for my $indicator (@{ $generator->kwalitee_indicators() })
+        for my $indicator (sort { $a->{name} cmp $b->{name} } @{ $generator->kwalitee_indicators() })
         {
             next unless $run_tests{ $indicator->{name} };
             my $sub = __PACKAGE__->can( $indicator->{name} );
@@ -106,6 +104,8 @@ sub import
     }
 }
 
+END { $Test->done_testing }
+
 1;
 
 __END__
@@ -114,8 +114,8 @@ __END__
 
 =encoding utf-8
 
-=for :stopwords chromatic Gavin Sherlock <sherlock@cpan.org> Karen Etheridge
-<ether@cpan.org> CPANTS extractable changelog libs Klausner Dolan
+=for :stopwords chromatic Gavin Sherlock Karen Etheridge CPANTS extractable changelog libs
+Klausner Dolan
 
 =head1 NAME
 
@@ -123,7 +123,7 @@ Test::Kwalitee - test the Kwalitee of a distribution before you release it
 
 =head1 VERSION
 
-version 1.04
+version 1.05
 
 =head1 SYNOPSIS
 

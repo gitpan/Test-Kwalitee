@@ -28,6 +28,8 @@
       },
       "develop" : {
          "requires" : {
+            "Dist::Zilla" : "4.300034",
+            "Dist::Zilla::PluginBundle::Author::ETHER" : "0.006",
             "Pod::Coverage::TrustPod" : "0",
             "Test::CPAN::Changes" : "0.19",
             "Test::CPAN::Meta" : "0",
@@ -39,7 +41,7 @@
          "requires" : {
             "Cwd" : "0",
             "Module::CPANTS::Analyse" : "0.87",
-            "Test::Builder" : "0",
+            "Test::Builder" : "0.88",
             "perl" : "5.006",
             "strict" : "0",
             "vars" : "0",
@@ -51,14 +53,16 @@
             "File::Find" : "0",
             "File::Temp" : "0",
             "Test::CheckDeps" : "0.002",
-            "Test::More" : "0.94"
+            "Test::Deep" : "0",
+            "Test::More" : "0.94",
+            "Test::Tester" : "0.108"
          }
       }
    },
    "provides" : {
       "Test::Kwalitee" : {
          "file" : "lib/Test/Kwalitee.pm",
-         "version" : "1.04"
+         "version" : "1.05"
       }
    },
    "release_status" : "stable",
@@ -74,7 +78,7 @@
          "web" : "https://github.com/karenetheridge/Test-Kwalitee"
       }
    },
-   "version" : "1.04",
+   "version" : "1.05",
    "x_Dist_Zilla" : {
       "perl" : {
          "version" : "5.017011"
@@ -266,6 +270,17 @@
             "version" : "1.003"
          },
          {
+            "class" : "Dist::Zilla::Plugin::Prereqs",
+            "config" : {
+               "Dist::Zilla::Plugin::Prereqs" : {
+                  "phase" : "develop",
+                  "type" : "requires"
+               }
+            },
+            "name" : "@Author::ETHER/Prereqs",
+            "version" : "4.300034"
+         },
+         {
             "class" : "Dist::Zilla::Plugin::ReadmeAnyFromPod",
             "name" : "@Author::ETHER/ReadmeAnyFromPod",
             "version" : "0.120120"
@@ -339,6 +354,11 @@
             "class" : "Dist::Zilla::Plugin::Git::Push",
             "name" : "@Author::ETHER/Git::Push",
             "version" : "2.013"
+         },
+         {
+            "class" : "Dist::Zilla::Plugin::GitHub::Update",
+            "name" : "@Author::ETHER/GitHub::Update",
+            "version" : "0.34"
          },
          {
             "class" : "Dist::Zilla::Plugin::InstallRelease",
