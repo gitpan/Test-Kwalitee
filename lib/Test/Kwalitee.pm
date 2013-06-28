@@ -2,9 +2,9 @@ use strict;
 use warnings;
 package Test::Kwalitee;
 {
-  $Test::Kwalitee::VERSION = '1.06';
+  $Test::Kwalitee::VERSION = '1.07';
 }
-# git description: v1.05-3-gcc0c7ac
+# git description: v1.06-12-g75b14e0
 
 BEGIN {
   $Test::Kwalitee::AUTHORITY = 'cpan:CHROMATIC';
@@ -14,6 +14,7 @@ BEGIN {
 use Cwd;
 use Test::Builder;
 use Module::CPANTS::Analyse 0.87;
+use namespace::clean;
 
 use vars qw( $Test $VERSION );
 
@@ -43,29 +44,12 @@ BEGIN
 #        extracts_nicely       => 'distribution extracts nicely',
 #        has_version           => 'distribution has a version',
 #        has_proper_version    => 'distribution has a proper version',
-
-    while (my ($subname, $diagnostic) = each %test_types)
-    {
-        my $sub = sub
-        {
-            my ($dist, $metric) = @_;
-            if (not $Test->ok( $metric->{code}->( $dist ), $subname))
-            {
-                $Test->diag('Error: ', $metric->{error});
-                $Test->diag('Details: ', $dist->{error}{$subname})
-                    if defined $dist->{error} and defined $dist->{error}{$subname};
-                $Test->diag('Remedy: ', $metric->{remedy});
-            }
-        };
-
-        no strict 'refs';
-        *{ $subname } = $sub;
-    }
 }
 
 sub import
 {
-    my ($class, %args)   = @_;
+    my ($self, %args) = @_;
+
     $args{basedir}     ||= cwd();
     $args{tests}       ||= [];
     my @tests            = @{ $args{tests} } ?
@@ -93,7 +77,21 @@ sub import
         dist    => $args{basedir},
     });
 
-    for my $generator (sort { $a cmp $b } @{ $analyzer->mck()->generators() } )
+    # get generators list in the order they should run, but also keep the
+    # order consistent between runs
+    # (TODO: remove, once MCK can itself sort properly -- see
+    # https://github.com/daxim/Module-CPANTS-Analyse/pull/12)
+    my @generators =
+        map { $_->[1] }             # Schwartzian transform out
+        sort {
+            $a->[0] <=> $b->[0]     # sort by run order
+                ||
+            $a->[1] cmp $b->[1]     # falling back to generator name
+        }
+        map { [ $_->order, $_ ] }   # Schwartzian transform in
+        @{ $analyzer->mck()->generators() };
+
+    for my $generator (@generators)
     {
         next if $generator =~ /Unpack/;
         next if $generator =~ /CPAN$/;
@@ -104,13 +102,26 @@ sub import
         for my $indicator (sort { $a->{name} cmp $b->{name} } @{ $generator->kwalitee_indicators() })
         {
             next unless $run_tests{ $indicator->{name} };
-            my $sub = __PACKAGE__->can( $indicator->{name} );
-            next unless $sub;
-            $sub->( $analyzer->d(), $indicator );
+            next unless exists $test_types{$indicator->{name}};
+            _run_indicator($analyzer->d(), $indicator);
         }
     }
 }
 
+sub _run_indicator
+{
+    my ($dist, $metric) = @_;
+
+    my $subname = $metric->{name};
+
+    if (not $Test->ok( $metric->{code}->( $dist ), $subname))
+    {
+        $Test->diag('Error: ', $metric->{error});
+        $Test->diag('Details: ', $dist->{error}{$subname})
+            if defined $dist->{error} and defined $dist->{error}{$subname};
+        $Test->diag('Remedy: ', $metric->{remedy});
+    }
+}
 
 1;
 
@@ -120,8 +131,8 @@ __END__
 
 =encoding utf-8
 
-=for :stopwords chromatic Gavin Sherlock Karen Etheridge CPANTS extractable changelog libs
-Klausner Dolan
+=for :stopwords chromatic Gavin Sherlock Karen Etheridge Kenichi Ishigaki CPANTS
+extractable changelog libs Klausner Dolan
 
 =head1 NAME
 
@@ -129,16 +140,21 @@ Test::Kwalitee - test the Kwalitee of a distribution before you release it
 
 =head1 VERSION
 
-version 1.06
+version 1.07
 
 =head1 SYNOPSIS
 
   # in a separate test file
-  use Test::More;
 
-  eval { require Test::Kwalitee; Test::Kwalitee->import() };
+  BEGIN {
+      unless ($ENV{RELEASE_TESTING})
+      {
+          use Test::More;
+          plan(skip_all => 'these tests are for release candidate testing');
+      }
+  }
 
-  plan( skip_all => 'Test::Kwalitee not installed; skipping' ) if $@;
+  use Test::Kwalitee;
 
 =head1 DESCRIPTION
 
@@ -160,8 +176,9 @@ Create a test file as shown in the synopsis.  Run it.  It will run all of the
 potential Kwalitee tests on the current distribution, if possible.  If any
 fail, it will report those as regular diagnostics.
 
-If you ship this test and a user does not have C<Test::Kwalitee> installed,
-nothing bad will happen.
+If you ship this test, it will not run for anyone else, because of the
+C<RELEASE_TESTING> guard. (You can omit this guard if you move the test to
+xt/release/, which is not run automatically by other users.)
 
 To run only a handful of tests, pass their names to the module's C<import()>
 method:
@@ -248,9 +265,21 @@ With thanks to CPANTS and Thomas Klausner, as well as test tester Chris Dolan.
 
 =head1 SEE ALSO
 
+=over 4
+
+=item *
+
 L<Module::CPANTS::Analyse>
 
+=item *
+
 L<Test::Kwalitee::Extra>
+
+=item *
+
+L<Dist::Zilla::Plugin::Test::Kwalitee>
+
+=back
 
 =head1 AUTHOR
 
@@ -274,6 +303,10 @@ Gavin Sherlock <sherlock@cpan.org>
 =item *
 
 Karen Etheridge <ether@cpan.org>
+
+=item *
+
+Kenichi Ishigaki <ishigaki@cpan.org>
 
 =back
 
