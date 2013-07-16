@@ -19,6 +19,9 @@ ether
 Kenichi
 Ishigaki
 ishigaki
+Nathan
+Haigh
+nathanhaigh
 lib
 Test
 Kwalitee

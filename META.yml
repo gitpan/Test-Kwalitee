@@ -10,7 +10,7 @@ build_requires:
   Test::More: 0.94
   Test::Tester: 0.108
 configure_requires:
-  Module::Build::Tiny: 0.023
+  Module::Build::Tiny: 0.025
 dynamic_config: 0
 generated_by: 'Dist::Zilla version 4.300035, CPAN::Meta::Converter version 2.131560'
 license: perl
@@ -26,11 +26,11 @@ no_index:
 provides:
   Test::Kwalitee:
     file: lib/Test/Kwalitee.pm
-    version: 1.07
+    version: 1.08
 requires:
   Cwd: 0
   Module::CPANTS::Analyse: 0.87
-  Test::Builder: 0
+  Test::Builder: 0.88
   namespace::clean: 0
   perl: 5.006
   strict: 0
@@ -40,7 +40,7 @@ resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Test-Kwalitee
   homepage: https://github.com/karenetheridge/Test-Kwalitee
   repository: https://github.com/karenetheridge/Test-Kwalitee.git
-version: 1.07
+version: 1.08
 x_Dist_Zilla:
   perl:
     version: 5.019001
@@ -176,7 +176,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::Git::Describe
       name: '@Author::ETHER/Git::Describe'
-      version: 0.002
+      version: 0.003
     -
       class: Dist::Zilla::Plugin::PkgVersion
       name: '@Author::ETHER/PkgVersion'
@@ -315,3 +315,4 @@ x_contributors:
   - 'Gavin Sherlock <sherlock@cpan.org>'
   - 'Karen Etheridge <ether@cpan.org>'
   - 'Kenichi Ishigaki <ishigaki@cpan.org>'
+  - 'Nathan Haigh <nathanhaigh@ukonline.co.uk>'

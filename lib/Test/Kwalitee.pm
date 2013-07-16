@@ -2,9 +2,9 @@ use strict;
 use warnings;
 package Test::Kwalitee;
 {
-  $Test::Kwalitee::VERSION = '1.07';
+  $Test::Kwalitee::VERSION = '1.08';
 }
-# git description: v1.06-12-g75b14e0
+# git description: v1.07-6-gd6c98ad
 
 BEGIN {
   $Test::Kwalitee::AUTHORITY = 'cpan:CHROMATIC';
@@ -12,7 +12,7 @@ BEGIN {
 # ABSTRACT: test the Kwalitee of a distribution before you release it
 
 use Cwd;
-use Test::Builder;
+use Test::Builder 0.88;
 use Module::CPANTS::Analyse 0.87;
 use namespace::clean;
 
@@ -20,61 +20,36 @@ use vars qw( $Test $VERSION );
 
 BEGIN { $Test = Test::Builder->new() }
 
-my %test_types;
-BEGIN
-{
-    %test_types =
-    (
-        extractable           => 'distribution is extractable',
-        has_readme            => 'distribution has a readme file',
-        has_manifest          => 'distribution has a MANIFEST',
-        has_meta_yml          => 'distribution has a META.yml file',
-        has_buildtool         => 'distribution has a build tool file',
-        has_changelog         => 'distribution has a changelog',
-        no_symlinks           => 'distribution has no symlinks',
-        has_tests             => 'distribution has tests',
-        proper_libs           => 'distribution has proper libs',
-        no_pod_errors         => 'distribution has no POD errors',
-        use_strict            => 'distribution files all use strict',
-        has_test_pod          => 'distribution has a POD test file',
-        has_test_pod_coverage => 'distribution has a POD-coverage test file',
-    );
-
-# These three don't really work unless you have a tarball, so skip them for now
-#        extracts_nicely       => 'distribution extracts nicely',
-#        has_version           => 'distribution has a version',
-#        has_proper_version    => 'distribution has a proper version',
-}
-
 sub import
 {
     my ($self, %args) = @_;
 
+    # Note: the basedir option is NOT documented, and may be removed!!!
     $args{basedir}     ||= cwd();
-    $args{tests}       ||= [];
-    my @tests            = @{ $args{tests} } ?
-                           @{ $args{tests} } : keys %test_types;
-    @tests               = keys %test_types if grep { /^-/ } @tests;
 
-    my %run_tests;
+    my @run_tests = grep { /^[^-]/ } @{$args{tests}};
+    my @skip_tests = map { s/^-//; $_ } grep { /^-/ } @{$args{tests}};
 
-    for my $test ( @tests, @{ $args{tests} } )
-    {
-        if ( $test =~ s/^-// )
-        {
-            delete $run_tests{$test};
-        }
-        else
-        {
-            $run_tests{$test} = 1;
-        }
-    }
+    # These don't really work unless you have a tarball, so skip them
+    push @skip_tests, qw(extracts_nicely no_generated_files has_proper_version has_version manifest_matches_dist);
 
-    $Test->plan( tests => scalar keys %run_tests );
+    # these tests have never been documented as being available via this dist;
+    # skip for now, but in later releases we may add them
+    push @skip_tests, qw(buildtool_not_executable
+        metayml_conforms_to_known_spec metayml_has_license metayml_is_parsable
+        has_better_auto_install has_working_buildtool
+        has_humanreadable_license valid_signature no_cpants_errors);
+
+    # these are classified as 'extra' tests, but they have always been
+    # included in Test::Kwalitee (they don't belong, so we will remove them in
+    # a later release)
+    my @include_extra = qw(has_test_pod has_test_pod_coverage);
 
     my $analyzer = Module::CPANTS::Analyse->new({
         distdir => $args{basedir},
         dist    => $args{basedir},
+        # for debugging..
+        opts => { no_capture => 1 },
     });
 
     # get generators list in the order they should run, but also keep the
@@ -93,19 +68,22 @@ sub import
 
     for my $generator (@generators)
     {
-        next if $generator =~ /Unpack/;
-        next if $generator =~ /CPAN$/;
-        next if $generator =~ /Authors$/;
-
         $generator->analyse($analyzer);
 
         for my $indicator (sort { $a->{name} cmp $b->{name} } @{ $generator->kwalitee_indicators() })
         {
-            next unless $run_tests{ $indicator->{name} };
-            next unless exists $test_types{$indicator->{name}};
+            next if ($indicator->{is_extra} or $indicator->{is_experimental})
+                and not grep { $indicator->{name} eq $_ } @include_extra;
+
+            next if @run_tests and not grep { $indicator->{name} eq $_ } @run_tests;
+
+            next if grep { $indicator->{name} eq $_ } @skip_tests;
+
             _run_indicator($analyzer->d(), $indicator);
         }
     }
+
+    $Test->done_testing;
 }
 
 sub _run_indicator
@@ -117,8 +95,13 @@ sub _run_indicator
     if (not $Test->ok( $metric->{code}->( $dist ), $subname))
     {
         $Test->diag('Error: ', $metric->{error});
-        $Test->diag('Details: ', $dist->{error}{$subname})
+
+        $Test->diag('Details: ',
+            (ref $dist->{error}{$subname}
+                ? join("\n", @{$dist->{error}{$subname}})
+                : $dist->{error}{$subname}))
             if defined $dist->{error} and defined $dist->{error}{$subname};
+
         $Test->diag('Remedy: ', $metric->{remedy});
     }
 }
@@ -131,8 +114,8 @@ __END__
 
 =encoding utf-8
 
-=for :stopwords chromatic Gavin Sherlock Karen Etheridge Kenichi Ishigaki CPANTS
-extractable changelog libs Klausner Dolan
+=for :stopwords chromatic Gavin Sherlock Karen Etheridge Kenichi Ishigaki Nathan Haigh
+CPANTS extractable changelog libs Klausner Dolan
 
 =head1 NAME
 
@@ -140,7 +123,7 @@ Test::Kwalitee - test the Kwalitee of a distribution before you release it
 
 =head1 VERSION
 
-version 1.07
+version 1.08
 
 =head1 SYNOPSIS
 
@@ -180,24 +163,14 @@ If you ship this test, it will not run for anyone else, because of the
 C<RELEASE_TESTING> guard. (You can omit this guard if you move the test to
 xt/release/, which is not run automatically by other users.)
 
-To run only a handful of tests, pass their names to the module's C<import()>
-method:
+To run only a handful of tests, pass their names to the module in the C<test>
+argument (either in the C<use> directive, or when calling C<import()> directly):
 
-  eval
-  {
-      require Test::Kwalitee;
-      Test::Kwalitee->import( tests => [ qw( use_strict has_tests ) ] );
-  };
+  use Test::Kwalitee tests => [ qw( use_strict has_tests ) ];
 
-To disable a test, pass its name with a leading minus (C<->) to C<import()>:
+To disable a test, pass its name with a leading minus (C<->):
 
-  eval
-  {
-      require Test::Kwalitee;
-      Test::Kwalitee->import( tests =>
-          [ qw( -has_test_pod -has_test_pod_coverage ) ]
-      );
-  };
+  use Test::Kwalitee tests => [ qw( -has_test_pod -has_test_pod_coverage ));
 
 As of version 1.00, the tests include:
 
@@ -205,19 +178,8 @@ As of version 1.00, the tests include:
 
 =item * extractable
 
-Is the distribution extractable?
-
-=item * has_readme
-
-Does the distribution have a F<README> file?
-
-=item * has_manifest
-
-Does the distribution have a F<MANIFEST>?
-
-=item * has_meta_yml
-
-Does the distribution have a F<META.yml> file?
+This test does nothing without a tarball; it will be removed in a subsequent
+version.
 
 =item * has_buildtool
 
@@ -227,13 +189,25 @@ Does the distribution have a build tool file?
 
 Does the distribution have a changelog?
 
-=item * no_symlinks
+=item * has_manifest
 
-Does the distribution have no symlinks?
+Does the distribution have a F<MANIFEST>?
+
+=item * has_meta_yml
+
+Does the distribution have a F<META.yml> file?
+
+=item * has_readme
+
+Does the distribution have a F<README> file?
 
 =item * has_tests
 
 Does the distribution have tests?
+
+=item * no_symlinks
+
+Does the distribution have no symlinks?
 
 =item * proper_libs
 
@@ -243,19 +217,20 @@ Does the distribution have proper libs?
 
 Does the distribution have no POD errors?
 
-=item * use_strict
-
-Does the distribution files all use strict?
-
 =item * has_test_pod
 
-Does the distribution have a POD test file?
+Does the distribution have a test for pod correctness?  (Note that this is a
+bad test to include in a distribution where it will be run by users; this
+check will be removed in a subsequent version.)
 
 =item * has_test_pod_coverage
 
-Does the distribution have a POD-coverage test file?
+Does the distribution have a test for pod coverage?  (This test will be
+removed in a subsequent version; see C<has_test_pod> above.)
 
-=for Pod::Coverage has_buildtool has_changelog has_manifest has_meta_yml has_test_pod has_test_pod_coverage has_tests
+=item * use_strict
+
+Does the distribution files all use strict?
 
 =back
 
@@ -307,6 +282,10 @@ Karen Etheridge <ether@cpan.org>
 =item *
 
 Kenichi Ishigaki <ishigaki@cpan.org>
+
+=item *
+
+Nathan Haigh <nathanhaigh@ukonline.co.uk>
 
 =back
 
