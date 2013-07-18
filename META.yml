@@ -3,7 +3,7 @@ abstract: 'test the Kwalitee of a distribution before you release it'
 author:
   - 'chromatic <chromatic@wgz.org>'
 build_requires:
-  File::Find: 0
+  Capture::Tiny: 0
   File::Temp: 0
   Test::CheckDeps: 0.006
   Test::Deep: 0
@@ -26,7 +26,7 @@ no_index:
 provides:
   Test::Kwalitee:
     file: lib/Test/Kwalitee.pm
-    version: 1.08
+    version: 1.09
 requires:
   Cwd: 0
   Module::CPANTS::Analyse: 0.87
@@ -34,13 +34,12 @@ requires:
   namespace::clean: 0
   perl: 5.006
   strict: 0
-  vars: 0
   warnings: 0
 resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Test-Kwalitee
   homepage: https://github.com/karenetheridge/Test-Kwalitee
   repository: https://github.com/karenetheridge/Test-Kwalitee.git
-version: 1.08
+version: 1.09
 x_Dist_Zilla:
   perl:
     version: 5.019001
@@ -72,7 +71,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::MetaProvides::Package
       name: '@Author::ETHER/MetaProvides::Package'
-      version: 1.14000002
+      version: 1.14000003
     -
       class: Dist::Zilla::Plugin::MetaConfig
       name: '@Author::ETHER/MetaConfig'
@@ -112,7 +111,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::Test::Compile
       name: '@Author::ETHER/Test::Compile'
-      version: 2.002
+      version: 2.006
     -
       class: Dist::Zilla::Plugin::Test::CheckDeps
       name: '@Author::ETHER/Test::CheckDeps'

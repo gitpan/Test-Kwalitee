@@ -30,7 +30,7 @@
          "requires" : {
             "Dist::Zilla" : "4.300035",
             "Dist::Zilla::Plugin::ModuleBuildTiny" : "0",
-            "Dist::Zilla::PluginBundle::Author::ETHER" : "0.010",
+            "Dist::Zilla::PluginBundle::Author::ETHER" : "0.012",
             "Pod::Coverage::TrustPod" : "0",
             "Test::CPAN::Changes" : "0.19",
             "Test::CPAN::Meta" : "0",
@@ -46,13 +46,12 @@
             "namespace::clean" : "0",
             "perl" : "5.006",
             "strict" : "0",
-            "vars" : "0",
             "warnings" : "0"
          }
       },
       "test" : {
          "requires" : {
-            "File::Find" : "0",
+            "Capture::Tiny" : "0",
             "File::Temp" : "0",
             "Test::CheckDeps" : "0.006",
             "Test::Deep" : "0",
@@ -64,7 +63,7 @@
    "provides" : {
       "Test::Kwalitee" : {
          "file" : "lib/Test/Kwalitee.pm",
-         "version" : "1.08"
+         "version" : "1.09"
       }
    },
    "release_status" : "stable",
@@ -80,7 +79,7 @@
          "web" : "https://github.com/karenetheridge/Test-Kwalitee"
       }
    },
-   "version" : "1.08",
+   "version" : "1.09",
    "x_Dist_Zilla" : {
       "perl" : {
          "version" : "5.019001"
@@ -119,7 +118,7 @@
          {
             "class" : "Dist::Zilla::Plugin::MetaProvides::Package",
             "name" : "@Author::ETHER/MetaProvides::Package",
-            "version" : "1.14000002"
+            "version" : "1.14000003"
          },
          {
             "class" : "Dist::Zilla::Plugin::MetaConfig",
@@ -169,7 +168,7 @@
          {
             "class" : "Dist::Zilla::Plugin::Test::Compile",
             "name" : "@Author::ETHER/Test::Compile",
-            "version" : "2.002"
+            "version" : "2.006"
          },
          {
             "class" : "Dist::Zilla::Plugin::Test::CheckDeps",

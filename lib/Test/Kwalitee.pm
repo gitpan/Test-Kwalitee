@@ -2,9 +2,9 @@ use strict;
 use warnings;
 package Test::Kwalitee;
 {
-  $Test::Kwalitee::VERSION = '1.08';
+  $Test::Kwalitee::VERSION = '1.09';
 }
-# git description: v1.07-6-gd6c98ad
+# git description: v1.08-6-gc231752
 
 BEGIN {
   $Test::Kwalitee::AUTHORITY = 'cpan:CHROMATIC';
@@ -16,8 +16,7 @@ use Test::Builder 0.88;
 use Module::CPANTS::Analyse 0.87;
 use namespace::clean;
 
-use vars qw( $Test $VERSION );
-
+my $Test;
 BEGIN { $Test = Test::Builder->new() }
 
 sub import
@@ -31,19 +30,11 @@ sub import
     my @skip_tests = map { s/^-//; $_ } grep { /^-/ } @{$args{tests}};
 
     # These don't really work unless you have a tarball, so skip them
-    push @skip_tests, qw(extracts_nicely no_generated_files has_proper_version has_version manifest_matches_dist);
+    push @skip_tests, qw(extractable extracts_nicely no_generated_files
+        has_proper_version has_version manifest_matches_dist);
 
-    # these tests have never been documented as being available via this dist;
-    # skip for now, but in later releases we may add them
-    push @skip_tests, qw(buildtool_not_executable
-        metayml_conforms_to_known_spec metayml_has_license metayml_is_parsable
-        has_better_auto_install has_working_buildtool
-        has_humanreadable_license valid_signature no_cpants_errors);
-
-    # these are classified as 'extra' tests, but they have always been
-    # included in Test::Kwalitee (they don't belong, so we will remove them in
-    # a later release)
-    my @include_extra = qw(has_test_pod has_test_pod_coverage);
+    # MCA has a patch to add 'needs_tarball', 'no_build' as flags
+    my @skip_flags = qw(is_extra is_experimental needs_db);
 
     my $analyzer = Module::CPANTS::Analyse->new({
         distdir => $args{basedir},
@@ -72,8 +63,7 @@ sub import
 
         for my $indicator (sort { $a->{name} cmp $b->{name} } @{ $generator->kwalitee_indicators() })
         {
-            next if ($indicator->{is_extra} or $indicator->{is_experimental})
-                and not grep { $indicator->{name} eq $_ } @include_extra;
+            next if grep { $indicator->{$_} } @skip_flags;
 
             next if @run_tests and not grep { $indicator->{name} eq $_ } @run_tests;
 
@@ -115,7 +105,7 @@ __END__
 =encoding utf-8
 
 =for :stopwords chromatic Gavin Sherlock Karen Etheridge Kenichi Ishigaki Nathan Haigh
-CPANTS extractable changelog libs Klausner Dolan
+CPANTS changelog libs Klausner Dolan
 
 =head1 NAME
 
@@ -123,7 +113,7 @@ Test::Kwalitee - test the Kwalitee of a distribution before you release it
 
 =head1 VERSION
 
-version 1.08
+version 1.09
 
 =head1 SYNOPSIS
 
@@ -170,16 +160,15 @@ argument (either in the C<use> directive, or when calling C<import()> directly):
 
 To disable a test, pass its name with a leading minus (C<->):
 
-  use Test::Kwalitee tests => [ qw( -has_test_pod -has_test_pod_coverage ));
+  use Test::Kwalitee tests => [ qw( -use_strict has_readme ));
 
-As of version 1.00, the tests include:
+As of Test::Kwalitee 1.09 and L<Module::CPANTS::Analyse> 0.87, the tests include:
 
 =over 4
 
-=item * extractable
+=item * buildtool_not_executable
 
-This test does nothing without a tarball; it will be removed in a subsequent
-version.
+F<Build.PL>/F<Makefile.PL> should not have an executable bit
 
 =item * has_buildtool
 
@@ -209,28 +198,46 @@ Does the distribution have tests?
 
 Does the distribution have no symlinks?
 
+=item * metayml_is_parsable
+
+Can the the F<META.yml> be parsed?
+
+=item * metayml_has_license
+
+Does the F<META.yml> declare a license?
+
 =item * proper_libs
 
 Does the distribution have proper libs?
+
+=item * has_working_buildtool
+
+If using L<Module::Install>, it is at least version 0.61?
+
+=item * has_better_auto_install
+
+If using L<Module::Install>, it is at least version 0.89?
+
+=item * has_humanreadable_license
+
+Is there a C<LICENSE> section in documentation, and/or a F<LICENSE> file
+present?
 
 =item * no_pod_errors
 
 Does the distribution have no POD errors?
 
-=item * has_test_pod
+=item * valid_signature
 
-Does the distribution have a test for pod correctness?  (Note that this is a
-bad test to include in a distribution where it will be run by users; this
-check will be removed in a subsequent version.)
-
-=item * has_test_pod_coverage
-
-Does the distribution have a test for pod coverage?  (This test will be
-removed in a subsequent version; see C<has_test_pod> above.)
+If a F<SIGNATURE> is present, can it be verified?
 
 =item * use_strict
 
 Does the distribution files all use strict?
+
+=item * no_cpants_errors
+
+Were there no errors encountered during CPANTS testing?
 
 =back
 
