@@ -2,9 +2,9 @@ use strict;
 use warnings;
 package Test::Kwalitee;
 {
-  $Test::Kwalitee::VERSION = '1.09';
+  $Test::Kwalitee::VERSION = '1.10';
 }
-# git description: v1.08-6-gc231752
+# git description: v1.09-10-g2038ae2
 
 BEGIN {
   $Test::Kwalitee::AUTHORITY = 'cpan:CHROMATIC';
@@ -17,14 +17,19 @@ use Module::CPANTS::Analyse 0.87;
 use namespace::clean;
 
 my $Test;
-BEGIN { $Test = Test::Builder->new() }
+BEGIN { $Test = Test::Builder->new }
 
 sub import
 {
     my ($self, %args) = @_;
 
+    warn "These tests should not be running unless AUTHOR_TESTING=1 and/or RELEASE_TESTING=1!\n"
+        # this setting is internal and for this distribution only - there is
+        # no reason for you to need to circumvent this check in any other context.
+        unless $ENV{_KWALITEE_NO_WARN} or $ENV{AUTHOR_TESTING} or $ENV{RELEASE_TESTING};
+
     # Note: the basedir option is NOT documented, and may be removed!!!
-    $args{basedir}     ||= cwd();
+    $args{basedir}     ||= cwd;
 
     my @run_tests = grep { /^[^-]/ } @{$args{tests}};
     my @skip_tests = map { s/^-//; $_ } grep { /^-/ } @{$args{tests}};
@@ -55,13 +60,13 @@ sub import
             $a->[1] cmp $b->[1]     # falling back to generator name
         }
         map { [ $_->order, $_ ] }   # Schwartzian transform in
-        @{ $analyzer->mck()->generators() };
+        @{ $analyzer->mck->generators };
 
     for my $generator (@generators)
     {
         $generator->analyse($analyzer);
 
-        for my $indicator (sort { $a->{name} cmp $b->{name} } @{ $generator->kwalitee_indicators() })
+        for my $indicator (sort { $a->{name} cmp $b->{name} } @{ $generator->kwalitee_indicators })
         {
             next if grep { $indicator->{$_} } @skip_flags;
 
@@ -69,7 +74,7 @@ sub import
 
             next if grep { $indicator->{name} eq $_ } @skip_tests;
 
-            _run_indicator($analyzer->d(), $indicator);
+            _run_indicator($analyzer->d, $indicator);
         }
     }
 
@@ -82,6 +87,7 @@ sub _run_indicator
 
     my $subname = $metric->{name};
 
+    $Test->level($Test->level + 1);
     if (not $Test->ok( $metric->{code}->( $dist ), $subname))
     {
         $Test->diag('Error: ', $metric->{error});
@@ -94,6 +100,7 @@ sub _run_indicator
 
         $Test->diag('Remedy: ', $metric->{remedy});
     }
+    $Test->level($Test->level - 1);
 }
 
 1;
@@ -104,7 +111,7 @@ __END__
 
 =encoding utf-8
 
-=for :stopwords chromatic Gavin Sherlock Karen Etheridge Kenichi Ishigaki Nathan Haigh
+=for :stopwords chromatic Karen Etheridge Gavin Sherlock Kenichi Ishigaki Nathan Haigh
 CPANTS changelog libs Klausner Dolan
 
 =head1 NAME
@@ -113,7 +120,7 @@ Test::Kwalitee - test the Kwalitee of a distribution before you release it
 
 =head1 VERSION
 
-version 1.09
+version 1.10
 
 =head1 SYNOPSIS
 
@@ -154,7 +161,7 @@ C<RELEASE_TESTING> guard. (You can omit this guard if you move the test to
 xt/release/, which is not run automatically by other users.)
 
 To run only a handful of tests, pass their names to the module in the C<test>
-argument (either in the C<use> directive, or when calling C<import()> directly):
+argument (either in the C<use> directive, or when calling C<import> directly):
 
   use Test::Kwalitee tests => [ qw( use_strict has_tests ) ];
 
@@ -162,80 +169,119 @@ To disable a test, pass its name with a leading minus (C<->):
 
   use Test::Kwalitee tests => [ qw( -use_strict has_readme ));
 
-As of Test::Kwalitee 1.09 and L<Module::CPANTS::Analyse> 0.87, the tests include:
+The list of each available metric currently available on your
+system can be obtained with the C<kwalitee-metrics> command (with
+descriptions, if you pass C<--verbose> or C<-v>, but
+as of Test::Kwalitee 1.09 and L<Module::CPANTS::Analyse> 0.87, the tests include:
 
 =over 4
 
-=item * buildtool_not_executable
+=item *
+
+buildtool_not_executable
 
 F<Build.PL>/F<Makefile.PL> should not have an executable bit
 
-=item * has_buildtool
+=item *
+
+has_buildtool
 
 Does the distribution have a build tool file?
 
-=item * has_changelog
+=item *
+
+has_changelog
 
 Does the distribution have a changelog?
 
-=item * has_manifest
+=item *
+
+has_manifest
 
 Does the distribution have a F<MANIFEST>?
 
-=item * has_meta_yml
+=item *
+
+has_meta_yml
 
 Does the distribution have a F<META.yml> file?
 
-=item * has_readme
+=item *
+
+has_readme
 
 Does the distribution have a F<README> file?
 
-=item * has_tests
+=item *
+
+has_tests
 
 Does the distribution have tests?
 
-=item * no_symlinks
+=item *
+
+no_symlinks
 
 Does the distribution have no symlinks?
 
-=item * metayml_is_parsable
+=item *
+
+metayml_is_parsable
 
 Can the the F<META.yml> be parsed?
 
-=item * metayml_has_license
+=item *
+
+metayml_has_license
 
 Does the F<META.yml> declare a license?
 
-=item * proper_libs
+=item *
+
+proper_libs
 
 Does the distribution have proper libs?
 
-=item * has_working_buildtool
+=item *
+
+has_working_buildtool
 
 If using L<Module::Install>, it is at least version 0.61?
 
-=item * has_better_auto_install
+=item *
+
+has_better_auto_install
 
 If using L<Module::Install>, it is at least version 0.89?
 
-=item * has_humanreadable_license
+=item *
+
+has_humanreadable_license
 
 Is there a C<LICENSE> section in documentation, and/or a F<LICENSE> file
 present?
 
-=item * no_pod_errors
+=item *
+
+no_pod_errors
 
 Does the distribution have no POD errors?
 
-=item * valid_signature
+=item *
+
+valid_signature
 
 If a F<SIGNATURE> is present, can it be verified?
 
-=item * use_strict
+=item *
+
+use_strict
 
 Does the distribution files all use strict?
 
-=item * no_cpants_errors
+=item *
+
+no_cpants_errors
 
 Were there no errors encountered during CPANTS testing?
 
@@ -251,6 +297,10 @@ With thanks to CPANTS and Thomas Klausner, as well as test tester Chris Dolan.
 
 =item *
 
+L<kwalitee-metrics>
+
+=item *
+
 L<Module::CPANTS::Analyse>
 
 =item *
@@ -263,9 +313,19 @@ L<Dist::Zilla::Plugin::Test::Kwalitee>
 
 =back
 
-=head1 AUTHOR
+=head1 AUTHORS
+
+=over 4
+
+=item *
 
 chromatic <chromatic@wgz.org>
+
+=item *
+
+Karen Etheridge <ether@cpan.org>
+
+=back
 
 =head1 COPYRIGHT AND LICENSE
 
@@ -281,10 +341,6 @@ the same terms as the Perl 5 programming language system itself.
 =item *
 
 Gavin Sherlock <sherlock@cpan.org>
-
-=item *
-
-Karen Etheridge <ether@cpan.org>
 
 =item *
 

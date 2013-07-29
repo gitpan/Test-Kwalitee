@@ -10,12 +10,12 @@ add_stopwords(<DATA>);
 all_pod_files_spelling_ok( qw( bin lib  ) );
 __DATA__
 chromatic
-Gavin
-Sherlock
-sherlock
 Karen
 Etheridge
 ether
+Gavin
+Sherlock
+sherlock
 Kenichi
 Ishigaki
 ishigaki

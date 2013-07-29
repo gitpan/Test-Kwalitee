@@ -2,13 +2,15 @@
 abstract: 'test the Kwalitee of a distribution before you release it'
 author:
   - 'chromatic <chromatic@wgz.org>'
+  - 'Karen Etheridge <ether@cpan.org>'
 build_requires:
   Capture::Tiny: 0
-  File::Temp: 0
   Test::CheckDeps: 0.006
   Test::Deep: 0
   Test::More: 0.94
+  Test::Script: 1.05
   Test::Tester: 0.108
+  Test::Warnings: 0
 configure_requires:
   Module::Build::Tiny: 0.025
 dynamic_config: 0
@@ -26,7 +28,7 @@ no_index:
 provides:
   Test::Kwalitee:
     file: lib/Test/Kwalitee.pm
-    version: 1.09
+    version: 1.10
 requires:
   Cwd: 0
   Module::CPANTS::Analyse: 0.87
@@ -39,10 +41,10 @@ resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Test-Kwalitee
   homepage: https://github.com/karenetheridge/Test-Kwalitee
   repository: https://github.com/karenetheridge/Test-Kwalitee.git
-version: 1.09
+version: 1.10
 x_Dist_Zilla:
   perl:
-    version: 5.019001
+    version: 5.019002
   plugins:
     -
       class: Dist::Zilla::Plugin::ContributorsFromGit
@@ -55,7 +57,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::GithubMeta
       name: '@Author::ETHER/GithubMeta'
-      version: 0.28
+      version: 0.30
     -
       class: Dist::Zilla::Plugin::AutoMetaResources
       name: '@Author::ETHER/AutoMetaResources'
@@ -111,7 +113,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::Test::Compile
       name: '@Author::ETHER/Test::Compile'
-      version: 2.006
+      version: 2.011
     -
       class: Dist::Zilla::Plugin::Test::CheckDeps
       name: '@Author::ETHER/Test::CheckDeps'
@@ -183,7 +185,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::PodWeaver
       name: '@Author::ETHER/PodWeaver'
-      version: 3.101641
+      version: 3.101642
     -
       class: Dist::Zilla::Plugin::NextRelease
       name: '@Author::ETHER/NextRelease'
@@ -220,6 +222,10 @@ x_Dist_Zilla:
       class: Dist::Zilla::Plugin::CopyFilesFromBuild
       name: '@Author::ETHER/CopyFilesFromBuild'
       version: 0.103510
+    -
+      class: Dist::Zilla::Plugin::Run::AfterBuild
+      name: '@Author::ETHER/Run::AfterBuild'
+      version: 0.020
     -
       class: Dist::Zilla::Plugin::RunExtraTests
       name: '@Author::ETHER/RunExtraTests'
@@ -263,7 +269,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::GitHub::Update
       name: '@Author::ETHER/GitHub::Update'
-      version: 0.34
+      version: 0.35
     -
       class: Dist::Zilla::Plugin::Git::Push
       name: '@Author::ETHER/Git::Push'
@@ -279,7 +285,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::Test::Kwalitee
       name: Test::Kwalitee
-      version: 2.03
+      version: 2.04
     -
       class: Dist::Zilla::Plugin::FinderCode
       name: ':InstallModules'
@@ -312,6 +318,5 @@ x_Dist_Zilla:
 x_authority: cpan:CHROMATIC
 x_contributors:
   - 'Gavin Sherlock <sherlock@cpan.org>'
-  - 'Karen Etheridge <ether@cpan.org>'
   - 'Kenichi Ishigaki <ishigaki@cpan.org>'
   - 'Nathan Haigh <nathanhaigh@ukonline.co.uk>'

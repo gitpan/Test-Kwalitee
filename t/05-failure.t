@@ -4,13 +4,10 @@ use warnings FATAL => 'all';
 use Test::Tester 0.108;
 use Test::More 0.88;
 use Test::Deep;
+use Test::Warnings;
 
 plan skip_all => 'These tests are only for Test::Builder 0.9x'
     if Test::Builder->VERSION >= 1.005;
-
-require Test::Kwalitee;
-
-    chdir 't/corpus';
 
 my ($premature, @results) = run_tests(
     sub {
@@ -19,6 +16,12 @@ my ($premature, @results) = run_tests(
         local *Test::Builder::plan = sub { };
         local *Test::Builder::done_testing = sub { };
 
+        # we are testing ourselves, so we don't want this warning
+        local $ENV{_KWALITEE_NO_WARN} = 1;
+
+        chdir 't/corpus';
+
+        require Test::Kwalitee;
         Test::Kwalitee->import( tests => [ qw(has_changelog) ] );
     },
 );
@@ -28,7 +31,7 @@ cmp_deeply(
     [
         superhashof({
             name => 'has_changelog',
-            depth => 2,
+            depth => 1,
             ok => 0,
             actual_ok => 0,
             type => '',

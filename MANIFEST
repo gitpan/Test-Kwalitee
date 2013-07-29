@@ -6,6 +6,7 @@ MANIFEST
 META.json
 META.yml
 README
+bin/kwalitee-metrics
 dist.ini
 lib/Test/Kwalitee.pm
 t/00-check-deps.t

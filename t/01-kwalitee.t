@@ -4,6 +4,7 @@ use warnings FATAL => 'all';
 use Test::Tester 0.108;
 use Test::More 0.88;
 use Test::Deep;
+use Test::Warnings;
 
 plan( skip_all => "running in a bare repository (some files missing): skipping" ) if -d '.git';
 
@@ -19,6 +20,9 @@ my ($premature, @results) = run_tests(
         local *Test::Builder::plan = sub { };
         local *Test::Builder::done_testing = sub { };
 
+        # we are testing ourselves, so we don't want this warning
+        local $ENV{_KWALITEE_NO_WARN} = 1;
+
         Test::Kwalitee->import;
     },
 );
@@ -29,7 +33,7 @@ cmp_deeply(
         map {
             superhashof({
                 name => $_,
-                depth => 2,
+                depth => 1,
                 ok => 1,
                 actual_ok => 1,
                 type => '',
