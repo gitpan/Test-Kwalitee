@@ -14,7 +14,7 @@ lib/Test/Kwalitee.pm
 );
 
 my @scripts = qw(
-bin/kwalitee-metrics
+script/kwalitee-metrics
 );
 
 # no fake home requested

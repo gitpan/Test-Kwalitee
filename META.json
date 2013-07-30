@@ -31,7 +31,7 @@
          "requires" : {
             "Dist::Zilla" : "4.300035",
             "Dist::Zilla::Plugin::ModuleBuildTiny" : "0.004",
-            "Dist::Zilla::PluginBundle::Author::ETHER" : "0.013",
+            "Dist::Zilla::PluginBundle::Author::ETHER" : "0.014",
             "Pod::Coverage::TrustPod" : "0",
             "Test::CPAN::Changes" : "0.19",
             "Test::CPAN::Meta" : "0",
@@ -65,7 +65,7 @@
    "provides" : {
       "Test::Kwalitee" : {
          "file" : "lib/Test/Kwalitee.pm",
-         "version" : "1.10"
+         "version" : "1.11"
       }
    },
    "release_status" : "stable",
@@ -81,7 +81,7 @@
          "web" : "https://github.com/karenetheridge/Test-Kwalitee"
       }
    },
-   "version" : "1.10",
+   "version" : "1.11",
    "x_Dist_Zilla" : {
       "perl" : {
          "version" : "5.019002"
@@ -135,6 +135,11 @@
          {
             "class" : "Dist::Zilla::Plugin::ShareDir",
             "name" : "@Author::ETHER/ShareDir",
+            "version" : "4.300035"
+         },
+         {
+            "class" : "Dist::Zilla::Plugin::FileFinder::ByName",
+            "name" : "@Author::ETHER/Examples",
             "version" : "4.300035"
          },
          {

@@ -2,9 +2,9 @@ use strict;
 use warnings;
 package Test::Kwalitee;
 {
-  $Test::Kwalitee::VERSION = '1.10';
+  $Test::Kwalitee::VERSION = '1.11';
 }
-# git description: v1.09-10-g2038ae2
+# git description: v1.10-1-gebd90c7
 
 BEGIN {
   $Test::Kwalitee::AUTHORITY = 'cpan:CHROMATIC';
@@ -120,7 +120,7 @@ Test::Kwalitee - test the Kwalitee of a distribution before you release it
 
 =head1 VERSION
 
-version 1.10
+version 1.11
 
 =head1 SYNOPSIS
 
@@ -297,7 +297,7 @@ With thanks to CPANTS and Thomas Klausner, as well as test tester Chris Dolan.
 
 =item *
 
-L<kwalitee-metrics>
+F<script/kwalitee-metrics>
 
 =item *
 
