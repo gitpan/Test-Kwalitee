@@ -52,8 +52,7 @@ __END__
 
 =encoding utf-8
 
-=for :stopwords chromatic Karen Etheridge Gavin Sherlock Kenichi Ishigaki Nathan Haigh
-programmatically
+=for :stopwords chromatic Karen Etheridge programmatically
 
 =head1 NAME
 
@@ -61,7 +60,7 @@ kwalitee-metrics
 
 =head1 VERSION
 
-version 1.11
+version 1.12
 
 =head1 DESCRIPTION
 

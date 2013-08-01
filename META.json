@@ -31,9 +31,8 @@
          "requires" : {
             "Dist::Zilla" : "4.300035",
             "Dist::Zilla::Plugin::ModuleBuildTiny" : "0.004",
-            "Dist::Zilla::PluginBundle::Author::ETHER" : "0.014",
+            "Dist::Zilla::PluginBundle::Author::ETHER" : "0.015",
             "Pod::Coverage::TrustPod" : "0",
-            "Test::CPAN::Changes" : "0.19",
             "Test::CPAN::Meta" : "0",
             "Test::Pod" : "1.41",
             "Test::Pod::Coverage" : "1.08"
@@ -58,14 +57,15 @@
             "Test::More" : "0.94",
             "Test::Script" : "1.05",
             "Test::Tester" : "0.108",
-            "Test::Warnings" : "0"
+            "Test::Warnings" : "0",
+            "blib" : "0"
          }
       }
    },
    "provides" : {
       "Test::Kwalitee" : {
          "file" : "lib/Test/Kwalitee.pm",
-         "version" : "1.11"
+         "version" : "1.12"
       }
    },
    "release_status" : "stable",
@@ -81,7 +81,7 @@
          "web" : "https://github.com/karenetheridge/Test-Kwalitee"
       }
    },
-   "version" : "1.11",
+   "version" : "1.12",
    "x_Dist_Zilla" : {
       "perl" : {
          "version" : "5.019002"
@@ -174,8 +174,19 @@
          },
          {
             "class" : "Dist::Zilla::Plugin::Test::Compile",
+            "config" : {
+               "Dist::Zilla::Plugin::Test::Compile" : {
+                  "module_finder" : [
+                     ":InstallModules"
+                  ],
+                  "script_finder" : [
+                     ":ExecFiles",
+                     "@Author::ETHER/Examples"
+                  ]
+               }
+            },
             "name" : "@Author::ETHER/Test::Compile",
-            "version" : "2.011"
+            "version" : "2.014"
          },
          {
             "class" : "Dist::Zilla::Plugin::Test::CheckDeps",
@@ -201,11 +212,6 @@
             "class" : "Dist::Zilla::Plugin::Test::Version",
             "name" : "@Author::ETHER/Test::Version",
             "version" : "0.002004"
-         },
-         {
-            "class" : "Dist::Zilla::Plugin::Test::CPAN::Changes",
-            "name" : "@Author::ETHER/Test::CPAN::Changes",
-            "version" : "0.008"
          },
          {
             "class" : "Dist::Zilla::Plugin::Test::ChangesHasContent",

@@ -11,6 +11,7 @@ build_requires:
   Test::Script: 1.05
   Test::Tester: 0.108
   Test::Warnings: 0
+  blib: 0
 configure_requires:
   Module::Build::Tiny: 0.025
 dynamic_config: 0
@@ -28,7 +29,7 @@ no_index:
 provides:
   Test::Kwalitee:
     file: lib/Test/Kwalitee.pm
-    version: 1.11
+    version: 1.12
 requires:
   Cwd: 0
   Module::CPANTS::Analyse: 0.87
@@ -41,7 +42,7 @@ resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Test-Kwalitee
   homepage: https://github.com/karenetheridge/Test-Kwalitee
   repository: https://github.com/karenetheridge/Test-Kwalitee.git
-version: 1.11
+version: 1.12
 x_Dist_Zilla:
   perl:
     version: 5.019002
@@ -116,8 +117,15 @@ x_Dist_Zilla:
       version: 4.300035
     -
       class: Dist::Zilla::Plugin::Test::Compile
+      config:
+        Dist::Zilla::Plugin::Test::Compile:
+          module_finder:
+            - ':InstallModules'
+          script_finder:
+            - ':ExecFiles'
+            - '@Author::ETHER/Examples'
       name: '@Author::ETHER/Test::Compile'
-      version: 2.011
+      version: 2.014
     -
       class: Dist::Zilla::Plugin::Test::CheckDeps
       name: '@Author::ETHER/Test::CheckDeps'
@@ -138,10 +146,6 @@ x_Dist_Zilla:
       class: Dist::Zilla::Plugin::Test::Version
       name: '@Author::ETHER/Test::Version'
       version: 0.002004
-    -
-      class: Dist::Zilla::Plugin::Test::CPAN::Changes
-      name: '@Author::ETHER/Test::CPAN::Changes'
-      version: 0.008
     -
       class: Dist::Zilla::Plugin::Test::ChangesHasContent
       name: '@Author::ETHER/Test::ChangesHasContent'

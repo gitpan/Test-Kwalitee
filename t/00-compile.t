@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-# This test was generated via Dist::Zilla::Plugin::Test::Compile 2.011
+# This test was generated via Dist::Zilla::Plugin::Test::Compile 2.014
 
 use Test::More 0.94;
 
@@ -10,7 +10,7 @@ use Test::More 0.94;
 use Capture::Tiny qw{ capture };
 
 my @module_files = qw(
-lib/Test/Kwalitee.pm
+Test/Kwalitee.pm
 );
 
 my @scripts = qw(
