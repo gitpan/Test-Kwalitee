@@ -5,7 +5,7 @@
       "Karen Etheridge <ether@cpan.org>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Dist::Zilla version 4.300035, CPAN::Meta::Converter version 2.131560",
+   "generated_by" : "Dist::Zilla version 4.300035, CPAN::Meta::Converter version 2.132140",
    "license" : [
       "perl_5"
    ],
@@ -24,16 +24,20 @@
    "prereqs" : {
       "configure" : {
          "requires" : {
-            "Module::Build::Tiny" : "0.025"
+            "Dist::CheckConflicts" : "0.02",
+            "Module::Build::Tiny" : "0.026"
          }
       },
       "develop" : {
          "requires" : {
             "Dist::Zilla" : "4.300035",
+            "Dist::Zilla::Plugin::Conflicts" : "!= 0.11",
             "Dist::Zilla::Plugin::ModuleBuildTiny" : "0.004",
-            "Dist::Zilla::PluginBundle::Author::ETHER" : "0.015",
+            "Dist::Zilla::PluginBundle::Author::ETHER" : "0.019",
             "Pod::Coverage::TrustPod" : "0",
+            "Test::CPAN::Changes" : "0.19",
             "Test::CPAN::Meta" : "0",
+            "Test::Kwalitee" : "1.08",
             "Test::Pod" : "1.41",
             "Test::Pod::Coverage" : "1.08"
          }
@@ -41,6 +45,7 @@
       "runtime" : {
          "requires" : {
             "Cwd" : "0",
+            "Dist::CheckConflicts" : "0.02",
             "Module::CPANTS::Analyse" : "0.87",
             "Test::Builder" : "0.88",
             "namespace::clean" : "0",
@@ -51,6 +56,7 @@
       },
       "test" : {
          "requires" : {
+            "CPAN::Meta::Check" : "0.007",
             "Capture::Tiny" : "0",
             "Test::CheckDeps" : "0.006",
             "Test::Deep" : "0",
@@ -65,7 +71,7 @@
    "provides" : {
       "Test::Kwalitee" : {
          "file" : "lib/Test/Kwalitee.pm",
-         "version" : "1.12"
+         "version" : "1.13"
       }
    },
    "release_status" : "stable",
@@ -81,10 +87,10 @@
          "web" : "https://github.com/karenetheridge/Test-Kwalitee"
       }
    },
-   "version" : "1.12",
+   "version" : "1.13",
    "x_Dist_Zilla" : {
       "perl" : {
-         "version" : "5.019002"
+         "version" : "5.019003"
       },
       "plugins" : [
          {
@@ -98,34 +104,14 @@
             "version" : "2.014"
          },
          {
-            "class" : "Dist::Zilla::Plugin::GithubMeta",
-            "name" : "@Author::ETHER/GithubMeta",
-            "version" : "0.30"
+            "class" : "Dist::Zilla::Plugin::PromptIfStale",
+            "name" : "@Author::ETHER/build",
+            "version" : "0.002"
          },
          {
-            "class" : "Dist::Zilla::Plugin::AutoMetaResources",
-            "name" : "@Author::ETHER/AutoMetaResources",
-            "version" : "1.20"
-         },
-         {
-            "class" : "Dist::Zilla::Plugin::Authority",
-            "name" : "@Author::ETHER/Authority",
-            "version" : "1.006"
-         },
-         {
-            "class" : "Dist::Zilla::Plugin::MetaNoIndex",
-            "name" : "@Author::ETHER/MetaNoIndex",
-            "version" : "4.300035"
-         },
-         {
-            "class" : "Dist::Zilla::Plugin::MetaProvides::Package",
-            "name" : "@Author::ETHER/MetaProvides::Package",
-            "version" : "1.14000003"
-         },
-         {
-            "class" : "Dist::Zilla::Plugin::MetaConfig",
-            "name" : "@Author::ETHER/MetaConfig",
-            "version" : "4.300035"
+            "class" : "Dist::Zilla::Plugin::PromptIfStale",
+            "name" : "@Author::ETHER/release",
+            "version" : "0.002"
          },
          {
             "class" : "Dist::Zilla::Plugin::ExecDir",
@@ -186,7 +172,7 @@
                }
             },
             "name" : "@Author::ETHER/Test::Compile",
-            "version" : "2.014"
+            "version" : "2.018"
          },
          {
             "class" : "Dist::Zilla::Plugin::Test::CheckDeps",
@@ -214,6 +200,11 @@
             "version" : "0.002004"
          },
          {
+            "class" : "Dist::Zilla::Plugin::Test::CPAN::Changes",
+            "name" : "@Author::ETHER/Test::CPAN::Changes",
+            "version" : "0.008"
+         },
+         {
             "class" : "Dist::Zilla::Plugin::Test::ChangesHasContent",
             "name" : "@Author::ETHER/Test::ChangesHasContent",
             "version" : "0.006"
@@ -221,7 +212,7 @@
          {
             "class" : "Dist::Zilla::Plugin::Test::UnusedVars",
             "name" : "@Author::ETHER/Test::UnusedVars",
-            "version" : "2.000004"
+            "version" : "2.000005"
          },
          {
             "class" : "Dist::Zilla::Plugin::Test::MinimumVersion",
@@ -247,6 +238,11 @@
             "class" : "Dist::Zilla::Plugin::Test::Pod::No404s",
             "name" : "@Author::ETHER/Test::Pod::No404s",
             "version" : "1.001"
+         },
+         {
+            "class" : "Dist::Zilla::Plugin::Test::Kwalitee",
+            "name" : "@Author::ETHER/Test::Kwalitee",
+            "version" : "2.06"
          },
          {
             "class" : "Dist::Zilla::Plugin::PruneCruft",
@@ -279,6 +275,36 @@
             "version" : "4.300035"
          },
          {
+            "class" : "Dist::Zilla::Plugin::GithubMeta",
+            "name" : "@Author::ETHER/GithubMeta",
+            "version" : "0.30"
+         },
+         {
+            "class" : "Dist::Zilla::Plugin::AutoMetaResources",
+            "name" : "@Author::ETHER/AutoMetaResources",
+            "version" : "1.20"
+         },
+         {
+            "class" : "Dist::Zilla::Plugin::Authority",
+            "name" : "@Author::ETHER/Authority",
+            "version" : "1.006"
+         },
+         {
+            "class" : "Dist::Zilla::Plugin::MetaNoIndex",
+            "name" : "@Author::ETHER/MetaNoIndex",
+            "version" : "4.300035"
+         },
+         {
+            "class" : "Dist::Zilla::Plugin::MetaProvides::Package",
+            "name" : "@Author::ETHER/MetaProvides::Package",
+            "version" : "1.14000003"
+         },
+         {
+            "class" : "Dist::Zilla::Plugin::MetaConfig",
+            "name" : "@Author::ETHER/MetaConfig",
+            "version" : "4.300035"
+         },
+         {
             "class" : "Dist::Zilla::Plugin::AutoPrereqs",
             "name" : "@Author::ETHER/AutoPrereqs",
             "version" : "4.300035"
@@ -287,6 +313,17 @@
             "class" : "Dist::Zilla::Plugin::MinimumPerl",
             "name" : "@Author::ETHER/MinimumPerl",
             "version" : "1.003"
+         },
+         {
+            "class" : "Dist::Zilla::Plugin::Prereqs",
+            "config" : {
+               "Dist::Zilla::Plugin::Prereqs" : {
+                  "phase" : "test",
+                  "type" : "requires"
+               }
+            },
+            "name" : "@Author::ETHER/Test::CheckDeps, indirect",
+            "version" : "4.300035"
          },
          {
             "class" : "Dist::Zilla::Plugin::Prereqs",
@@ -350,11 +387,6 @@
             "version" : "0.1.2"
          },
          {
-            "class" : "Dist::Zilla::Plugin::CheckPrereqsIndexed",
-            "name" : "@Author::ETHER/CheckPrereqsIndexed",
-            "version" : "0.009"
-         },
-         {
             "class" : "Dist::Zilla::Plugin::TestRelease",
             "name" : "@Author::ETHER/TestRelease",
             "version" : "4.300035"
@@ -395,9 +427,20 @@
             "version" : "4.300035"
          },
          {
-            "class" : "Dist::Zilla::Plugin::Test::Kwalitee",
-            "name" : "Test::Kwalitee",
-            "version" : "2.04"
+            "class" : "Dist::Zilla::Plugin::Conflicts",
+            "name" : "Conflicts",
+            "version" : "0.10"
+         },
+         {
+            "class" : "Dist::Zilla::Plugin::Prereqs",
+            "config" : {
+               "Dist::Zilla::Plugin::Prereqs" : {
+                  "phase" : "develop",
+                  "type" : "requires"
+               }
+            },
+            "name" : "DevelopRequires",
+            "version" : "4.300035"
          },
          {
             "class" : "Dist::Zilla::Plugin::FinderCode",
@@ -439,6 +482,9 @@
       }
    },
    "x_authority" : "cpan:CHROMATIC",
+   "x_breaks" : {
+      "Dist::Zilla::Plugin::Test::Kwalitee" : "2.04"
+   },
    "x_contributors" : [
       "Gavin Sherlock <sherlock@cpan.org>",
       "Kenichi Ishigaki <ishigaki@cpan.org>",

@@ -4,6 +4,7 @@ author:
   - 'chromatic <chromatic@wgz.org>'
   - 'Karen Etheridge <ether@cpan.org>'
 build_requires:
+  CPAN::Meta::Check: 0.007
   Capture::Tiny: 0
   Test::CheckDeps: 0.006
   Test::Deep: 0
@@ -13,9 +14,10 @@ build_requires:
   Test::Warnings: 0
   blib: 0
 configure_requires:
-  Module::Build::Tiny: 0.025
+  Dist::CheckConflicts: 0.02
+  Module::Build::Tiny: 0.026
 dynamic_config: 0
-generated_by: 'Dist::Zilla version 4.300035, CPAN::Meta::Converter version 2.131560'
+generated_by: 'Dist::Zilla version 4.300035, CPAN::Meta::Converter version 2.132140'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -29,9 +31,10 @@ no_index:
 provides:
   Test::Kwalitee:
     file: lib/Test/Kwalitee.pm
-    version: 1.12
+    version: 1.13
 requires:
   Cwd: 0
+  Dist::CheckConflicts: 0.02
   Module::CPANTS::Analyse: 0.87
   Test::Builder: 0.88
   namespace::clean: 0
@@ -42,10 +45,10 @@ resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Test-Kwalitee
   homepage: https://github.com/karenetheridge/Test-Kwalitee
   repository: https://github.com/karenetheridge/Test-Kwalitee.git
-version: 1.12
+version: 1.13
 x_Dist_Zilla:
   perl:
-    version: 5.019002
+    version: 5.019003
   plugins:
     -
       class: Dist::Zilla::Plugin::ContributorsFromGit
@@ -56,29 +59,13 @@ x_Dist_Zilla:
       name: '@Author::ETHER/Git::NextVersion'
       version: 2.014
     -
-      class: Dist::Zilla::Plugin::GithubMeta
-      name: '@Author::ETHER/GithubMeta'
-      version: 0.30
+      class: Dist::Zilla::Plugin::PromptIfStale
+      name: '@Author::ETHER/build'
+      version: 0.002
     -
-      class: Dist::Zilla::Plugin::AutoMetaResources
-      name: '@Author::ETHER/AutoMetaResources'
-      version: 1.20
-    -
-      class: Dist::Zilla::Plugin::Authority
-      name: '@Author::ETHER/Authority'
-      version: 1.006
-    -
-      class: Dist::Zilla::Plugin::MetaNoIndex
-      name: '@Author::ETHER/MetaNoIndex'
-      version: 4.300035
-    -
-      class: Dist::Zilla::Plugin::MetaProvides::Package
-      name: '@Author::ETHER/MetaProvides::Package'
-      version: 1.14000003
-    -
-      class: Dist::Zilla::Plugin::MetaConfig
-      name: '@Author::ETHER/MetaConfig'
-      version: 4.300035
+      class: Dist::Zilla::Plugin::PromptIfStale
+      name: '@Author::ETHER/release'
+      version: 0.002
     -
       class: Dist::Zilla::Plugin::ExecDir
       name: '@Author::ETHER/ExecDir'
@@ -125,7 +112,7 @@ x_Dist_Zilla:
             - ':ExecFiles'
             - '@Author::ETHER/Examples'
       name: '@Author::ETHER/Test::Compile'
-      version: 2.014
+      version: 2.018
     -
       class: Dist::Zilla::Plugin::Test::CheckDeps
       name: '@Author::ETHER/Test::CheckDeps'
@@ -147,13 +134,17 @@ x_Dist_Zilla:
       name: '@Author::ETHER/Test::Version'
       version: 0.002004
     -
+      class: Dist::Zilla::Plugin::Test::CPAN::Changes
+      name: '@Author::ETHER/Test::CPAN::Changes'
+      version: 0.008
+    -
       class: Dist::Zilla::Plugin::Test::ChangesHasContent
       name: '@Author::ETHER/Test::ChangesHasContent'
       version: 0.006
     -
       class: Dist::Zilla::Plugin::Test::UnusedVars
       name: '@Author::ETHER/Test::UnusedVars'
-      version: 2.000004
+      version: 2.000005
     -
       class: Dist::Zilla::Plugin::Test::MinimumVersion
       name: '@Author::ETHER/Test::MinimumVersion'
@@ -174,6 +165,10 @@ x_Dist_Zilla:
       class: Dist::Zilla::Plugin::Test::Pod::No404s
       name: '@Author::ETHER/Test::Pod::No404s'
       version: 1.001
+    -
+      class: Dist::Zilla::Plugin::Test::Kwalitee
+      name: '@Author::ETHER/Test::Kwalitee'
+      version: 2.06
     -
       class: Dist::Zilla::Plugin::PruneCruft
       name: '@Author::ETHER/PruneCruft'
@@ -199,6 +194,30 @@ x_Dist_Zilla:
       name: '@Author::ETHER/NextRelease'
       version: 4.300035
     -
+      class: Dist::Zilla::Plugin::GithubMeta
+      name: '@Author::ETHER/GithubMeta'
+      version: 0.30
+    -
+      class: Dist::Zilla::Plugin::AutoMetaResources
+      name: '@Author::ETHER/AutoMetaResources'
+      version: 1.20
+    -
+      class: Dist::Zilla::Plugin::Authority
+      name: '@Author::ETHER/Authority'
+      version: 1.006
+    -
+      class: Dist::Zilla::Plugin::MetaNoIndex
+      name: '@Author::ETHER/MetaNoIndex'
+      version: 4.300035
+    -
+      class: Dist::Zilla::Plugin::MetaProvides::Package
+      name: '@Author::ETHER/MetaProvides::Package'
+      version: 1.14000003
+    -
+      class: Dist::Zilla::Plugin::MetaConfig
+      name: '@Author::ETHER/MetaConfig'
+      version: 4.300035
+    -
       class: Dist::Zilla::Plugin::AutoPrereqs
       name: '@Author::ETHER/AutoPrereqs'
       version: 4.300035
@@ -206,6 +225,14 @@ x_Dist_Zilla:
       class: Dist::Zilla::Plugin::MinimumPerl
       name: '@Author::ETHER/MinimumPerl'
       version: 1.003
+    -
+      class: Dist::Zilla::Plugin::Prereqs
+      config:
+        Dist::Zilla::Plugin::Prereqs:
+          phase: test
+          type: requires
+      name: '@Author::ETHER/Test::CheckDeps, indirect'
+      version: 4.300035
     -
       class: Dist::Zilla::Plugin::Prereqs
       config:
@@ -255,10 +282,6 @@ x_Dist_Zilla:
       name: '@Author::ETHER/Git::Remote::Check'
       version: 0.1.2
     -
-      class: Dist::Zilla::Plugin::CheckPrereqsIndexed
-      name: '@Author::ETHER/CheckPrereqsIndexed'
-      version: 0.009
-    -
       class: Dist::Zilla::Plugin::TestRelease
       name: '@Author::ETHER/TestRelease'
       version: 4.300035
@@ -291,9 +314,17 @@ x_Dist_Zilla:
       name: '@Author::ETHER/ConfirmRelease'
       version: 4.300035
     -
-      class: Dist::Zilla::Plugin::Test::Kwalitee
-      name: Test::Kwalitee
-      version: 2.04
+      class: Dist::Zilla::Plugin::Conflicts
+      name: Conflicts
+      version: 0.10
+    -
+      class: Dist::Zilla::Plugin::Prereqs
+      config:
+        Dist::Zilla::Plugin::Prereqs:
+          phase: develop
+          type: requires
+      name: DevelopRequires
+      version: 4.300035
     -
       class: Dist::Zilla::Plugin::FinderCode
       name: ':InstallModules'
@@ -324,6 +355,8 @@ x_Dist_Zilla:
       is_trial: 0
     version: 4.300035
 x_authority: cpan:CHROMATIC
+x_breaks:
+  Dist::Zilla::Plugin::Test::Kwalitee: 2.04
 x_contributors:
   - 'Gavin Sherlock <sherlock@cpan.org>'
   - 'Kenichi Ishigaki <ishigaki@cpan.org>'

@@ -1,14 +1,14 @@
 use strict;
 use warnings;
 package Test::Kwalitee;
-{
-  $Test::Kwalitee::VERSION = '1.12';
-}
-# git description: v1.11-3-g8802f7b
-
 BEGIN {
   $Test::Kwalitee::AUTHORITY = 'cpan:CHROMATIC';
 }
+{
+  $Test::Kwalitee::VERSION = '1.13';
+}
+# git description: v1.12-9-g05778d9
+
 # ABSTRACT: test the Kwalitee of a distribution before you release it
 
 use Cwd;
@@ -26,7 +26,10 @@ sub import
     warn "These tests should not be running unless AUTHOR_TESTING=1 and/or RELEASE_TESTING=1!\n"
         # this setting is internal and for this distribution only - there is
         # no reason for you to need to circumvent this check in any other context.
-        unless $ENV{_KWALITEE_NO_WARN} or $ENV{AUTHOR_TESTING} or $ENV{RELEASE_TESTING};
+        # Please DO NOT enable this test to run for users, as it can fail
+        # unexpectedly as parts of the toolchain changes!
+        unless $ENV{_KWALITEE_NO_WARN} or $ENV{AUTHOR_TESTING} or $ENV{RELEASE_TESTING}
+            or (caller)[1] =~ /^xt/;
 
     # Note: the basedir option is NOT documented, and may be removed!!!
     $args{basedir}     ||= cwd;
@@ -120,7 +123,7 @@ Test::Kwalitee - test the Kwalitee of a distribution before you release it
 
 =head1 VERSION
 
-version 1.12
+version 1.13
 
 =head1 SYNOPSIS
 

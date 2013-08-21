@@ -8,6 +8,7 @@ META.yml
 README
 dist.ini
 lib/Test/Kwalitee.pm
+lib/Test/Kwalitee/Conflicts.pm
 script/kwalitee-metrics
 t/00-check-deps.t
 t/00-compile.t
@@ -17,11 +18,13 @@ t/02-include.t
 t/03-exclude.t
 t/04-selftest.t
 t/05-failure.t
+t/06-warnings.t
 t/corpus/Foo.pm
 weaver.ini
 xt/author/pod-spell.t
 xt/release/changes_has_content.t
 xt/release/clean-namespaces.t
+xt/release/cpan-changes.t
 xt/release/distmeta.t
 xt/release/eol.t
 xt/release/kwalitee.t
@@ -32,3 +35,4 @@ xt/release/pod-no404s.t
 xt/release/pod-syntax.t
 xt/release/test-version.t
 xt/release/unused-vars.t
+xt/warnings.t
