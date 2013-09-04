@@ -5,9 +5,9 @@ BEGIN {
   $Test::Kwalitee::AUTHORITY = 'cpan:CHROMATIC';
 }
 {
-  $Test::Kwalitee::VERSION = '1.13';
+  $Test::Kwalitee::VERSION = '1.14';
 }
-# git description: v1.12-9-g05778d9
+# git description: v1.13-2-g2cafb15
 
 # ABSTRACT: test the Kwalitee of a distribution before you release it
 
@@ -123,7 +123,7 @@ Test::Kwalitee - test the Kwalitee of a distribution before you release it
 
 =head1 VERSION
 
-version 1.13
+version 1.14
 
 =head1 SYNOPSIS
 
