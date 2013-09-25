@@ -1,8 +1,16 @@
 use strict;
 use warnings;
-use Test::More;
 
-eval 'use Test::NoTabs';
-plan skip_all => 'Test::NoTabs required' if $@;
+# this test was generated with Dist::Zilla::Plugin::Test::NoTabs 0.02
 
-all_perl_files_ok();
+use Test::More 0.88;
+use Test::NoTabs;
+
+my @files = (
+    'lib/Test/Kwalitee.pm',
+    'lib/Test/Kwalitee/Conflicts.pm',
+    'script/kwalitee-metrics'
+);
+
+notabs_ok($_) foreach @files;
+done_testing;
