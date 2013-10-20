@@ -22,7 +22,7 @@ __END__
 
 =encoding UTF-8
 
-=for :stopwords chromatic Karen Etheridge
+=for :stopwords chromatic Karen Etheridge Gavin Sherlock Kenichi Ishigaki Nathan Haigh
 
 =head1 NAME
 
@@ -30,7 +30,7 @@ Test::Kwalitee::Conflicts - Provide information on conflicts for Test::Kwalitee
 
 =head1 VERSION
 
-version 1.16
+version 1.17
 
 =head1 AUTHORS
 

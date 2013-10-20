@@ -31,7 +31,7 @@ no_index:
 provides:
   Test::Kwalitee:
     file: lib/Test/Kwalitee.pm
-    version: 1.16
+    version: 1.17
 requires:
   Cwd: 0
   Dist::CheckConflicts: 0.02
@@ -45,7 +45,7 @@ resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Test-Kwalitee
   homepage: https://github.com/karenetheridge/Test-Kwalitee
   repository: https://github.com/karenetheridge/Test-Kwalitee.git
-version: 1.16
+version: 1.17
 x_Dist_Zilla:
   perl:
     version: 5.019004

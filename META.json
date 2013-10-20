@@ -88,7 +88,7 @@
    "provides" : {
       "Test::Kwalitee" : {
          "file" : "lib/Test/Kwalitee.pm",
-         "version" : "1.16"
+         "version" : "1.17"
       }
    },
    "release_status" : "stable",
@@ -104,7 +104,7 @@
          "web" : "https://github.com/karenetheridge/Test-Kwalitee"
       }
    },
-   "version" : "1.16",
+   "version" : "1.17",
    "x_Dist_Zilla" : {
       "perl" : {
          "version" : "5.019004"

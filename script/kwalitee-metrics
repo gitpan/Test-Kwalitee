@@ -53,7 +53,8 @@ __END__
 
 =encoding UTF-8
 
-=for :stopwords chromatic Karen Etheridge programmatically
+=for :stopwords chromatic Karen Etheridge Gavin Sherlock Kenichi Ishigaki Nathan Haigh
+programmatically
 
 =head1 NAME
 
@@ -61,7 +62,7 @@ kwalitee-metrics - list details of all kwalitee metrics installed on the system
 
 =head1 VERSION
 
-version 1.16
+version 1.17
 
 =head1 DESCRIPTION
 
