@@ -1,5 +1,9 @@
 Revision history for Test-Kwalitee
 
+1.16      2013-10-20 21:44:53Z (Karen Etheridge)
+    - now printing even more diagnostics on error (as much as we have
+      available)
+
 1.15      2013-09-25 03:12:20Z (Karen Etheridge)
     - re-release with fixed compile test
 

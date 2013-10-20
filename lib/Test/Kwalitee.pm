@@ -5,15 +5,15 @@ BEGIN {
   $Test::Kwalitee::AUTHORITY = 'cpan:CHROMATIC';
 }
 {
-  $Test::Kwalitee::VERSION = '1.15';
+  $Test::Kwalitee::VERSION = '1.16';
 }
-# git description: v1.14-2-g3b0b09d
+# git description: v1.15-6-g54531ac
 
 # ABSTRACT: test the Kwalitee of a distribution before you release it
 
 use Cwd;
 use Test::Builder 0.88;
-use Module::CPANTS::Analyse 0.87;
+use Module::CPANTS::Analyse 0.92;
 use namespace::clean;
 
 my $Test;
@@ -51,21 +51,7 @@ sub import
         opts => { no_capture => 1 },
     });
 
-    # get generators list in the order they should run, but also keep the
-    # order consistent between runs
-    # (TODO: remove, once MCK can itself sort properly -- see
-    # https://github.com/daxim/Module-CPANTS-Analyse/pull/12)
-    my @generators =
-        map { $_->[1] }             # Schwartzian transform out
-        sort {
-            $a->[0] <=> $b->[0]     # sort by run order
-                ||
-            $a->[1] cmp $b->[1]     # falling back to generator name
-        }
-        map { [ $_->order, $_ ] }   # Schwartzian transform in
-        @{ $analyzer->mck->generators };
-
-    for my $generator (@generators)
+    for my $generator (@{ $analyzer->mck->generators })
     {
         $generator->analyse($analyzer);
 
@@ -91,15 +77,23 @@ sub _run_indicator
     my $subname = $metric->{name};
 
     $Test->level($Test->level + 1);
-    if (not $Test->ok( $metric->{code}->( $dist ), $subname))
+    if (not $Test->ok( $metric->{code}->($dist), $subname))
     {
         $Test->diag('Error: ', $metric->{error});
 
-        $Test->diag('Details: ',
+        # NOTE: this is poking into the analyse structures; we really should
+        # have a formal API for accessing this.
+
+        # attempt to print all the extra information we have
+        my @details;
+        push @details, $metric->{details}->($dist)
+            if $metric->{details} and ref $metric->{details} eq 'CODE';
+        push @details,
             (ref $dist->{error}{$subname}
-                ? join("\n", @{$dist->{error}{$subname}})
-                : $dist->{error}{$subname}))
+                ? @{$dist->{error}{$subname}}
+                : $dist->{error}{$subname})
             if defined $dist->{error} and defined $dist->{error}{$subname};
+        $Test->diag("Details:\n", join("\n", @details)) if @details;
 
         $Test->diag('Remedy: ', $metric->{remedy});
     }
@@ -112,7 +106,7 @@ __END__
 
 =pod
 
-=encoding utf-8
+=encoding UTF-8
 
 =for :stopwords chromatic Karen Etheridge Gavin Sherlock Kenichi Ishigaki Nathan Haigh
 CPANTS changelog libs Klausner Dolan
@@ -123,7 +117,7 @@ Test::Kwalitee - test the Kwalitee of a distribution before you release it
 
 =head1 VERSION
 
-version 1.15
+version 1.16
 
 =head1 SYNOPSIS
 

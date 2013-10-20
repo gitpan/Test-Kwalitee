@@ -1,4 +1,5 @@
 Build.PL
+CONTRIBUTING
 Changes
 INSTALL
 LICENSE
@@ -11,8 +12,6 @@ dist.ini
 lib/Test/Kwalitee.pm
 lib/Test/Kwalitee/Conflicts.pm
 script/kwalitee-metrics
-t/00-check-deps.t
-t/00-compile.t
 t/00-report-prereqs.t
 t/01-kwalitee-tb2.t
 t/01-kwalitee.t
@@ -23,6 +22,7 @@ t/05-failure.t
 t/06-warnings.t
 t/corpus/Foo.pm
 weaver.ini
+xt/author/00-compile.t
 xt/author/pod-spell.t
 xt/release/changes_has_content.t
 xt/release/clean-namespaces.t
