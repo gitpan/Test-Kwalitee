@@ -22,7 +22,8 @@ __END__
 
 =encoding UTF-8
 
-=for :stopwords chromatic Karen Etheridge Gavin Sherlock Kenichi Ishigaki Nathan Haigh
+=for :stopwords chromatic Karen Etheridge David Steinbrunner Gavin Sherlock Kenichi
+Ishigaki Nathan Haigh Zoffix Znet
 
 =head1 NAME
 
@@ -30,7 +31,7 @@ Test::Kwalitee::Conflicts - Provide information on conflicts for Test::Kwalitee
 
 =head1 VERSION
 
-version 1.17
+version 1.18
 
 =head1 AUTHORS
 

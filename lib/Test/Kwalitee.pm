@@ -4,12 +4,10 @@ package Test::Kwalitee;
 BEGIN {
   $Test::Kwalitee::AUTHORITY = 'cpan:CHROMATIC';
 }
-{
-  $Test::Kwalitee::VERSION = '1.17';
-}
-# git description: v1.16-1-g325c34d
-
+# git description: v1.17-9-gd806079
+$Test::Kwalitee::VERSION = '1.18';
 # ABSTRACT: test the Kwalitee of a distribution before you release it
+# vim: set ts=8 sw=4 tw=78 et :
 
 use Cwd;
 use Test::Builder 0.88;
@@ -108,8 +106,9 @@ __END__
 
 =encoding UTF-8
 
-=for :stopwords chromatic Karen Etheridge Gavin Sherlock Kenichi Ishigaki Nathan Haigh
-CPANTS changelog libs Klausner Dolan
+=for :stopwords chromatic Karen Etheridge David Steinbrunner Gavin Sherlock Kenichi
+Ishigaki Nathan Haigh Zoffix Znet CPANTS changelog recognised Klausner
+Dolan
 
 =head1 NAME
 
@@ -117,7 +116,7 @@ Test::Kwalitee - test the Kwalitee of a distribution before you release it
 
 =head1 VERSION
 
-version 1.17
+version 1.18
 
 =head1 SYNOPSIS
 
@@ -169,15 +168,9 @@ To disable a test, pass its name with a leading minus (C<->):
 The list of each available metric currently available on your
 system can be obtained with the C<kwalitee-metrics> command (with
 descriptions, if you pass C<--verbose> or C<-v>, but
-as of Test::Kwalitee 1.09 and L<Module::CPANTS::Analyse> 0.87, the tests include:
+as of Test::Kwalitee 1.09 and L<Module::CPANTS::Analyse> 0.92, the tests include:
 
 =over 4
-
-=item *
-
-buildtool_not_executable
-
-F<Build.PL>/F<Makefile.PL> should not have an executable bit
 
 =item *
 
@@ -190,6 +183,19 @@ Does the distribution have a build tool file?
 has_changelog
 
 Does the distribution have a changelog?
+
+=item *
+
+has_humanreadable_license
+
+Is there a C<LICENSE> section in documentation, and/or a F<LICENSE> file
+present?
+
+=item *
+
+has_license_in_source_file
+
+Is there license information in any of the source files?
 
 =item *
 
@@ -217,70 +223,46 @@ Does the distribution have tests?
 
 =item *
 
+metayml_conforms_to_known_spec
+
+Does META.yml conform to any recognised META.yml specification?
+(For specs see
+L<http://module-build.sourceforge.net/META-spec-current.html>)
+
+=item *
+
+metayml_is_parsable
+
+Can the F<META.yml> be parsed?
+
+=item *
+
+no_broken_auto_install
+
+Is the distribution using an old version of L<Module::Install>? Versions of
+L<Module::Install> prior to 0.89 do not detect correctly that C<CPAN>/C<CPANPLUS>
+shell is used.
+
+=item *
+
+no_broken_module_install
+
+Does the distribution use an obsolete version of L<Module::Install>?
+Versions of L<Module::Install> prior to 0.61 might not work on some systems at
+all. Additionally if the F<Makefile.PL> uses the C<auto_install()>
+feature, you need at least version 0.64. Also, 1.04 is known to be broken.
+
+=item *
+
 no_symlinks
 
 Does the distribution have no symlinks?
 
 =item *
 
-metayml_is_parsable
-
-Can the the F<META.yml> be parsed?
-
-=item *
-
-metayml_has_license
-
-Does the F<META.yml> declare a license?
-
-=item *
-
-proper_libs
-
-Does the distribution have proper libs?
-
-=item *
-
-has_working_buildtool
-
-If using L<Module::Install>, it is at least version 0.61?
-
-=item *
-
-has_better_auto_install
-
-If using L<Module::Install>, it is at least version 0.89?
-
-=item *
-
-has_humanreadable_license
-
-Is there a C<LICENSE> section in documentation, and/or a F<LICENSE> file
-present?
-
-=item *
-
-no_pod_errors
-
-Does the distribution have no POD errors?
-
-=item *
-
-valid_signature
-
-If a F<SIGNATURE> is present, can it be verified?
-
-=item *
-
 use_strict
 
 Does the distribution files all use strict?
-
-=item *
-
-no_cpants_errors
-
-Were there no errors encountered during CPANTS testing?
 
 =back
 
@@ -294,7 +276,7 @@ With thanks to CPANTS and Thomas Klausner, as well as test tester Chris Dolan.
 
 =item *
 
-F<script/kwalitee-metrics>
+L<kwalitee-metrics> (in this distribution)
 
 =item *
 
@@ -337,6 +319,10 @@ the same terms as the Perl 5 programming language system itself.
 
 =item *
 
+David Steinbrunner <dsteinbrunner@pobox.com>
+
+=item *
+
 Gavin Sherlock <sherlock@cpan.org>
 
 =item *
@@ -346,6 +332,10 @@ Kenichi Ishigaki <ishigaki@cpan.org>
 =item *
 
 Nathan Haigh <nathanhaigh@ukonline.co.uk>
+
+=item *
+
+Zoffix Znet <cpan@zoffix.com>
 
 =back
 
