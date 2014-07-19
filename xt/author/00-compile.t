@@ -2,15 +2,14 @@ use 5.006;
 use strict;
 use warnings;
 
-# this test was generated with Dist::Zilla::Plugin::Test::Compile 2.039
+# this test was generated with Dist::Zilla::Plugin::Test::Compile 2.043
 
-use Test::More 0.94 tests => 3 + ($ENV{AUTHOR_TESTING} ? 1 : 0);
+use Test::More 0.94 tests => 2 + ($ENV{AUTHOR_TESTING} ? 1 : 0);
 
 
 
 my @module_files = (
-    'Test/Kwalitee.pm',
-    'Test/Kwalitee/Conflicts.pm'
+    'Test/Kwalitee.pm'
 );
 
 my @scripts = (
@@ -50,9 +49,9 @@ foreach my $file (@scripts)
 { SKIP: {
     open my $fh, '<', $file or warn("Unable to open $file: $!"), next;
     my $line = <$fh>;
-    close $fh and skip("$file isn't perl", 1) unless $line =~ /^#!.*?\bperl\b\s*(.*)$/;
 
-    my @flags = $1 ? split(/\s+/, $1) : ();
+    close $fh and skip("$file isn't perl", 1) unless $line =~ /^#!\s*(?:\S*perl\S*)((?:\s+-\w*)*)(?:\s*#.*)?$/;
+    my @flags = $1 ? split(' ', $1) : ();
 
     my $stderr = IO::Handle->new;
 
