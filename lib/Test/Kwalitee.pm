@@ -4,8 +4,8 @@ package Test::Kwalitee;
 BEGIN {
   $Test::Kwalitee::AUTHORITY = 'cpan:CHROMATIC';
 }
-# git description: v1.18-17-g2114f67
-$Test::Kwalitee::VERSION = '1.19';
+# git description: v1.19-8-g5fdce72
+$Test::Kwalitee::VERSION = '1.20'; # TRIAL
 # ABSTRACT: Test the Kwalitee of a distribution before you release it
 # KEYWORDS: testing tests kwalitee CPANTS quality lint errors critic
 # vim: set ts=8 sw=4 tw=78 et :
@@ -15,12 +15,33 @@ use Test::Builder 0.88;
 use Module::CPANTS::Analyse 0.92;
 use namespace::clean;
 
+use parent 'Exporter';
+our @EXPORT_OK = qw(kwalitee_ok);
+
 my $Test;
 BEGIN { $Test = Test::Builder->new }
 
 sub import
 {
-    my ($self, %args) = @_;
+    my ($class, @args) = @_;
+
+    # back-compatibility mode!
+    if (@args % 2 == 0)
+    {
+        $Test->level($Test->level + 1);
+        my %args = @args;
+        my $result = kwalitee_ok(@{$args{tests}});
+        $Test->done_testing;
+        return $result;
+    }
+
+    # otherwise, do what a regular import would do...
+    $class->export_to_level(1, @_);
+}
+
+sub kwalitee_ok
+{
+    my (@tests) = @_;
 
     warn "These tests should not be running unless AUTHOR_TESTING=1 and/or RELEASE_TESTING=1!\n"
         # this setting is internal and for this distribution only - there is
@@ -28,13 +49,11 @@ sub import
         # Please DO NOT enable this test to run for users, as it can fail
         # unexpectedly as parts of the toolchain changes!
         unless $ENV{_KWALITEE_NO_WARN} or $ENV{AUTHOR_TESTING} or $ENV{RELEASE_TESTING}
-            or (caller)[1] =~ /^xt/;
+            or (caller)[1] =~ /^xt/
+            or ((caller)[0]->isa(__PACKAGE__) and (caller(1))[1] =~ /^xt/);
 
-    # Note: the basedir option is NOT documented, and may be removed!!!
-    $args{basedir}     ||= cwd;
-
-    my @run_tests = grep { /^[^-]/ } @{$args{tests}};
-    my @skip_tests = map { s/^-//; $_ } grep { /^-/ } @{$args{tests}};
+    my @run_tests = grep { /^[^-]/ } @tests;
+    my @skip_tests = map { s/^-//; $_ } grep { /^-/ } @tests;
 
     # These don't really work unless you have a tarball, so skip them
     push @skip_tests, qw(extractable extracts_nicely no_generated_files
@@ -43,12 +62,16 @@ sub import
     # MCA has a patch to add 'needs_tarball', 'no_build' as flags
     my @skip_flags = qw(is_extra is_experimental needs_db);
 
+    my $basedir = cwd;
+
     my $analyzer = Module::CPANTS::Analyse->new({
-        distdir => $args{basedir},
-        dist    => $args{basedir},
+        distdir => $basedir,
+        dist    => $basedir,
         # for debugging..
         opts => { no_capture => 1 },
     });
+
+    my $ok = 1;
 
     for my $generator (@{ $analyzer->mck->generators })
     {
@@ -62,11 +85,11 @@ sub import
 
             next if grep { $indicator->{name} eq $_ } @skip_tests;
 
-            _run_indicator($analyzer->d, $indicator);
+            $ok &&= _run_indicator($analyzer->d, $indicator);
         }
     }
 
-    $Test->done_testing;
+    return $ok;
 }
 
 sub _run_indicator
@@ -74,10 +97,12 @@ sub _run_indicator
     my ($dist, $metric) = @_;
 
     my $subname = $metric->{name};
+    my $ok = 1;
 
     $Test->level($Test->level + 1);
     if (not $Test->ok( $metric->{code}->($dist), $subname))
     {
+        $ok = 0;
         $Test->diag('Error: ', $metric->{error});
 
         # NOTE: this is poking into the analyse structures; we really should
@@ -97,6 +122,8 @@ sub _run_indicator
         $Test->diag('Remedy: ', $metric->{remedy});
     }
     $Test->level($Test->level - 1);
+
+    return $ok;
 }
 
 1;
@@ -113,21 +140,21 @@ Test::Kwalitee - Test the Kwalitee of a distribution before you release it
 
 =head1 VERSION
 
-version 1.19
+version 1.20
 
 =head1 SYNOPSIS
 
-  # in a separate test file
+In a separate test file:
 
+  use Test::More;
   BEGIN {
-      unless ($ENV{RELEASE_TESTING})
-      {
-          use Test::More;
-          plan(skip_all => 'these tests are for release candidate testing');
-      }
+      plan skip_all => 'these tests are for release candidate testing'
+          unless $ENV{RELEASE_TESTING};
   }
 
-  use Test::Kwalitee;
+  use Test::Kwalitee 'kwalitee_ok';
+  kwalitee_ok();
+  done_testing;
 
 =head1 DESCRIPTION
 
@@ -155,14 +182,37 @@ If you ship this test, it will not run for anyone else, because of the
 C<RELEASE_TESTING> guard. (You can omit this guard if you move the test to
 xt/release/, which is not run automatically by other users.)
 
-To run only a handful of tests, pass their names to the module in the C<test>
-argument (either in the C<use> directive, or when calling C<import> directly):
+=head1 FUNCTIONS
 
-  use Test::Kwalitee tests => [ qw( use_strict has_tests ) ];
+=head2 kwalitee_ok
+
+With no arguments, runs all standard metrics.
+
+To run only a handful of tests, pass their name(s) to the C<kwalitee_ok>
+function:
+
+  kwalitee_ok(qw( use_strict has_tests ));
 
 To disable a test, pass its name with a leading minus (C<->):
 
-  use Test::Kwalitee tests => [ qw( -use_strict has_readme ));
+  kwalitee_ok(qw( -use_strict has_readme ));
+
+=head1 BACK-COMPATIBILITY MODE
+
+Previous versions of this module ran tests directly via the C<import> sub, like so:
+
+    use Test::Kwalitee;
+    # and that's it!
+
+...but this is problematic if you need to perform some setup first, as you
+would need to do that in a C<BEGIN> block, or manually call C<import>. This is
+messy!
+
+However, this calling path is still available, e.g.:
+
+  use Test::Kwalitee tests => [ qw( use_strict has_tests ) ];
+
+=head1 METRICS
 
 The list of each available metric currently available on your
 system can be obtained with the C<kwalitee-metrics> command (with
@@ -305,6 +355,14 @@ L<Test::Kwalitee::Extra>
 
 L<Dist::Zilla::Plugin::Test::Kwalitee>
 
+=item *
+
+L<Dist::Zilla::Plugin::Test::Kwalitee::Extra>
+
+=item *
+
+L<Dist::Zilla::App::Command::kwalitee>
+
 =back
 
 =head1 AUTHORS
@@ -330,6 +388,8 @@ the same terms as the Perl 5 programming language system itself.
 
 =head1 CONTRIBUTORS
 
+=for stopwords David Steinbrunner Gavin Sherlock Kenichi Ishigaki Nathan Haigh Zoffix Znet chromatic
+
 =over 4
 
 =item *
@@ -351,6 +411,10 @@ Nathan Haigh <nathanhaigh@ukonline.co.uk>
 =item *
 
 Zoffix Znet <cpan@zoffix.com>
+
+=item *
+
+chromatic <chromatic@wgz.org>
 
 =back
 

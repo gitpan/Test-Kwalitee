@@ -17,6 +17,7 @@ my @files = (
     't/04-selftest.t',
     't/05-failure.t',
     't/06-warnings.t',
+    't/07-kwalitee-ok.t',
     't/corpus/Foo.pm',
     't/zzz-check-breaks.t',
     'xt/author/00-compile.t',
@@ -31,6 +32,7 @@ my @files = (
     'xt/release/mojibake.t',
     'xt/release/no-tabs.t',
     'xt/release/pod-coverage.t',
+    'xt/release/pod-no404s.t',
     'xt/release/pod-syntax.t',
     'xt/release/portability.t',
     'xt/warnings.t'

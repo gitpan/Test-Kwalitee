@@ -1,20 +1,20 @@
 do { my $x = {
        'configure' => {
                         'requires' => {
-                                        'ExtUtils::MakeMaker' => '6.30',
-                                        'Module::Build::Tiny' => '0.036'
+                                        'ExtUtils::MakeMaker' => '0',
+                                        'Module::Build::Tiny' => '0.037'
                                       }
                       },
        'develop' => {
                       'recommends' => {
-                                        'Dist::Zilla::PluginBundle::Author::ETHER' => '0.066'
+                                        'Dist::Zilla::PluginBundle::Author::ETHER' => '0.069'
                                       },
                       'requires' => {
                                       'Dist::Zilla' => '5',
                                       'Dist::Zilla::Plugin::Breaks' => '0',
-                                      'Dist::Zilla::Plugin::ContributorsFromGit' => '0',
                                       'Dist::Zilla::Plugin::Git::CheckFor::CorrectBranch' => '0.004',
                                       'Dist::Zilla::Plugin::Git::Commit' => '2.020',
+                                      'Dist::Zilla::Plugin::Git::Contributors' => '0.003',
                                       'Dist::Zilla::Plugin::Git::GatherDir' => '2.016',
                                       'Dist::Zilla::Plugin::GitHub::Update' => '0',
                                       'Dist::Zilla::Plugin::GithubMeta' => '0',
@@ -26,13 +26,14 @@ do { my $x = {
                                       'Dist::Zilla::Plugin::NextRelease' => '4.300018',
                                       'Dist::Zilla::Plugin::PkgVersion' => '5.010',
                                       'Dist::Zilla::Plugin::Prereqs' => '0',
+                                      'Dist::Zilla::Plugin::ReadmeAnyFromPod' => '0.142180',
                                       'Dist::Zilla::Plugin::RunExtraTests' => '0.019',
                                       'Dist::Zilla::Plugin::Test::CPAN::Changes' => '0.008',
                                       'Dist::Zilla::Plugin::Test::CheckBreaks' => '0',
                                       'Dist::Zilla::Plugin::Test::CleanNamespaces' => '0',
                                       'Dist::Zilla::Plugin::Test::Compile' => '2.039',
                                       'Dist::Zilla::Plugin::Test::MinimumVersion' => '2.000003',
-                                      'Dist::Zilla::PluginBundle::Author::ETHER' => '0.019',
+                                      'Dist::Zilla::PluginBundle::Author::ETHER' => '0.068',
                                       'File::Spec' => '0',
                                       'IO::Handle' => '0',
                                       'IPC::Open3' => '0',
@@ -53,9 +54,11 @@ do { my $x = {
        'runtime' => {
                       'requires' => {
                                       'Cwd' => '0',
+                                      'Exporter' => '0',
                                       'Module::CPANTS::Analyse' => '0.92',
                                       'Test::Builder' => '0.88',
                                       'namespace::clean' => '0',
+                                      'parent' => '0',
                                       'perl' => '5.006',
                                       'strict' => '0',
                                       'warnings' => '0'
@@ -63,24 +66,18 @@ do { my $x = {
                     },
        'test' => {
                    'recommends' => {
-                                     'CPAN::Meta' => '0',
-                                     'CPAN::Meta::Prereqs' => '0',
-                                     'CPAN::Meta::Requirements' => '2.120900'
+                                     'CPAN::Meta' => '2.120900'
                                    },
                    'requires' => {
                                    'CPAN::Meta::Check' => '0.007',
                                    'CPAN::Meta::Requirements' => '0',
                                    'ExtUtils::MakeMaker' => '0',
                                    'File::Spec' => '0',
-                                   'File::Spec::Functions' => '0',
-                                   'List::Util' => '0',
-                                   'Scalar::Util' => '0',
                                    'Test::Deep' => '0',
                                    'Test::More' => '0.88',
                                    'Test::Tester' => '0.108',
                                    'Test::Warnings' => '0.009',
-                                   'if' => '0',
-                                   'version' => '0.77'
+                                   'if' => '0'
                                  }
                  }
      };
