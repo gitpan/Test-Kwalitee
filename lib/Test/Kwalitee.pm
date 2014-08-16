@@ -4,8 +4,8 @@ package Test::Kwalitee;
 BEGIN {
   $Test::Kwalitee::AUTHORITY = 'cpan:CHROMATIC';
 }
-# git description: v1.20-TRIAL-1-g3cdf002
-$Test::Kwalitee::VERSION = '1.21';
+# git description: v1.21-3-ga55ecda
+$Test::Kwalitee::VERSION = '1.22';
 # ABSTRACT: Test the Kwalitee of a distribution before you release it
 # KEYWORDS: testing tests kwalitee CPANTS quality lint errors critic
 # vim: set ts=8 sw=4 tw=78 et :
@@ -85,7 +85,8 @@ sub kwalitee_ok
 
             next if grep { $indicator->{name} eq $_ } @skip_tests;
 
-            $ok &&= _run_indicator($analyzer->d, $indicator);
+            my $result = _run_indicator($analyzer->d, $indicator);
+            $ok &&= $result;
         }
     }
 
@@ -140,7 +141,7 @@ Test::Kwalitee - Test the Kwalitee of a distribution before you release it
 
 =head1 VERSION
 
-version 1.21
+version 1.22
 
 =head1 SYNOPSIS
 

@@ -6,6 +6,7 @@ use Test::More 0.88;
 use Test::Deep;
 use if $ENV{AUTHOR_TESTING}, 'Test::Warnings';
 
+require Test::Kwalitee;
 my ($premature, @results) = run_tests(
     sub {
         # prevent Test::Kwalitee from making a plan
@@ -18,8 +19,7 @@ my ($premature, @results) = run_tests(
 
         chdir 't/corpus';
 
-        require Test::Kwalitee;
-        Test::Kwalitee->import( tests => [ qw(has_changelog) ] );
+        Test::Kwalitee->import( tests => [ qw(has_changelog no_symlinks) ] );
     },
 );
 
@@ -34,8 +34,16 @@ cmp_deeply(
             type => '',
             diag => re(qr/^Error: The distribution ...+\nRemedy: Add a/s),
         }),
+        superhashof({
+            name => 'no_symlinks',
+            depth => 1,
+            ok => 1,
+            actual_ok => 1,
+            type => '',
+            diag => ignore,
+        }),
     ],
     'test fails, with diagnosis',
-);
+) or diag 'got results: ', explain \@results;
 
 done_testing;

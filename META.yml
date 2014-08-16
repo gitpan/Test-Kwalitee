@@ -39,7 +39,7 @@ no_index:
 provides:
   Test::Kwalitee:
     file: lib/Test/Kwalitee.pm
-    version: '1.21'
+    version: '1.22'
 requires:
   Cwd: '0'
   Exporter: '0'
@@ -56,7 +56,7 @@ resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Test-Kwalitee
   homepage: https://github.com/karenetheridge/Test-Kwalitee
   repository: https://github.com/karenetheridge/Test-Kwalitee.git
-version: '1.21'
+version: '1.22'
 x_Dist_Zilla:
   perl:
     version: '5.021002'
@@ -363,15 +363,26 @@ x_Dist_Zilla:
           inherit_version: '1'
           meta_noindex: '1'
       name: '@Author::ETHER/MetaProvides::Package'
-      version: '2.000003'
+      version: '2.000004'
     -
       class: Dist::Zilla::Plugin::MetaConfig
       name: '@Author::ETHER/MetaConfig'
       version: '5.020'
     -
       class: Dist::Zilla::Plugin::Keywords
+      config:
+        Dist::Zilla::Plugin::Keywords:
+          keywords:
+            - testing
+            - tests
+            - kwalitee
+            - CPANTS
+            - quality
+            - lint
+            - errors
+            - critic
       name: '@Author::ETHER/Keywords'
-      version: '0.005'
+      version: '0.006'
     -
       class: Dist::Zilla::Plugin::Git::Contributors
       config:
@@ -441,7 +452,7 @@ x_Dist_Zilla:
           run:
             - "bash -c \"if [[ `dirname %d` != .build ]]; then test -e .ackrc && grep -q -- '--ignore-dir=%d' .ackrc || echo '--ignore-dir=%d' >> .ackrc; fi; if [[ %d =~ ^%n-[.[:xdigit:]]+$ ]]; then rm -f .latest; ln -s %d .latest; fi\""
       name: '@Author::ETHER/Run::AfterBuild'
-      version: '0.023'
+      version: '0.024'
     -
       class: Dist::Zilla::Plugin::CheckStrictVersion
       name: '@Author::ETHER/CheckStrictVersion'
@@ -509,7 +520,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::CopyFilesFromRelease
       name: '@Author::ETHER/CopyFilesFromRelease'
-      version: '0.001'
+      version: '0.002'
     -
       class: Dist::Zilla::Plugin::Run::AfterRelease
       config:
@@ -517,7 +528,7 @@ x_Dist_Zilla:
           run:
             - 'rm -f README.md'
       name: '@Author::ETHER/remove old READMEs'
-      version: '0.023'
+      version: '0.024'
     -
       class: Dist::Zilla::Plugin::Git::Commit
       config:
@@ -545,7 +556,7 @@ x_Dist_Zilla:
         Dist::Zilla::Plugin::Git::Tag:
           branch: ~
           signed: 0
-          tag: v1.21
+          tag: v1.22
           tag_format: v%v%t
           tag_message: v%v%t
           time_zone: local
@@ -574,7 +585,7 @@ x_Dist_Zilla:
         Dist::Zilla::Plugin::Run::Role::Runner:
           run: REDACTED
       name: '@Author::ETHER/install release'
-      version: '0.023'
+      version: '0.024'
     -
       class: Dist::Zilla::Plugin::ConfirmRelease
       name: '@Author::ETHER/ConfirmRelease'
@@ -609,8 +620,12 @@ x_Dist_Zilla:
       version: '5.020'
     -
       class: Dist::Zilla::Plugin::Test::CleanNamespaces
+      config:
+        Dist::Zilla::Plugin::Test::CleanNamespaces:
+          filename: xt/release/clean-namespaces.t
+          skips: []
       name: Test::CleanNamespaces
-      version: '0.004'
+      version: '0.005'
     -
       class: Dist::Zilla::Plugin::FinderCode
       name: ':InstallModules'
