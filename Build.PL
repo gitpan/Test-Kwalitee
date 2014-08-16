@@ -65,7 +65,7 @@ EOW
         "Karen Etheridge <ether\@cpan.org>"
       ],
       "dist_name" => "Test-Kwalitee",
-      "dist_version" => "1.20",
+      "dist_version" => "1.21",
       "license" => "perl",
       "module_name" => "Test::Kwalitee",
       "recommends" => {},

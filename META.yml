@@ -39,7 +39,7 @@ no_index:
 provides:
   Test::Kwalitee:
     file: lib/Test/Kwalitee.pm
-    version: '1.20'
+    version: '1.21'
 requires:
   Cwd: '0'
   Exporter: '0'
@@ -56,7 +56,7 @@ resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Test-Kwalitee
   homepage: https://github.com/karenetheridge/Test-Kwalitee
   repository: https://github.com/karenetheridge/Test-Kwalitee.git
-version: '1.20'
+version: '1.21'
 x_Dist_Zilla:
   perl:
     version: '5.021002'
@@ -228,7 +228,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::Test::ReportPrereqs
       name: '@Author::ETHER/Test::ReportPrereqs'
-      version: '0.018'
+      version: '0.019'
     -
       class: Dist::Zilla::Plugin::Test::Portability
       name: '@Author::ETHER/Test::Portability'
@@ -334,7 +334,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::ReadmeAnyFromPod
       name: '@Author::ETHER/ReadmeAnyFromPod'
-      version: '0.142180'
+      version: '0.142250'
     -
       class: Dist::Zilla::Plugin::GithubMeta
       name: '@Author::ETHER/GithubMeta'
@@ -376,11 +376,11 @@ x_Dist_Zilla:
       class: Dist::Zilla::Plugin::Git::Contributors
       config:
         Dist::Zilla::Plugin::Git::Contributors:
-          include_authors: '1'
-          include_releaser: '0'
-          order_by: name
+          include_authors: '0'
+          include_releaser: '1'
+          order_by: commits
       name: '@Author::ETHER/Git::Contributors'
-      version: '0.004'
+      version: '0.006'
     -
       class: Dist::Zilla::Plugin::AutoPrereqs
       name: '@Author::ETHER/AutoPrereqs'
@@ -407,7 +407,7 @@ x_Dist_Zilla:
         Dist::Zilla::Role::TestRunner:
           default_jobs: 9
       name: '@Author::ETHER/MakeMaker::Fallback'
-      version: '0.011'
+      version: '0.013'
     -
       class: Dist::Zilla::Plugin::ModuleBuildTiny::Fallback
       config:
@@ -545,7 +545,7 @@ x_Dist_Zilla:
         Dist::Zilla::Plugin::Git::Tag:
           branch: ~
           signed: 0
-          tag: v1.20-TRIAL
+          tag: v1.21
           tag_format: v%v%t
           tag_message: v%v%t
           time_zone: local
@@ -650,15 +650,14 @@ x_Dist_Zilla:
   zilla:
     class: Dist::Zilla::Dist::Builder
     config:
-      is_trial: '1'
+      is_trial: '0'
     version: '5.020'
 x_authority: cpan:CHROMATIC
 x_breaks:
   Dist::Zilla::Plugin::Test::Kwalitee: '<= 2.04'
 x_contributors:
-  - 'David Steinbrunner <dsteinbrunner@pobox.com>'
   - 'Gavin Sherlock <sherlock@cpan.org>'
-  - 'Kenichi Ishigaki <ishigaki@cpan.org>'
+  - 'David Steinbrunner <dsteinbrunner@pobox.com>'
   - 'Nathan Haigh <nathanhaigh@ukonline.co.uk>'
   - 'Zoffix Znet <cpan@zoffix.com>'
-  - 'chromatic <chromatic@wgz.org>'
+  - 'Kenichi Ishigaki <ishigaki@cpan.org>'

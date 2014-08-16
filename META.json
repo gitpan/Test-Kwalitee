@@ -46,7 +46,7 @@
             "Dist::Zilla::Plugin::Breaks" : "0",
             "Dist::Zilla::Plugin::Git::CheckFor::CorrectBranch" : "0.004",
             "Dist::Zilla::Plugin::Git::Commit" : "2.020",
-            "Dist::Zilla::Plugin::Git::Contributors" : "0.003",
+            "Dist::Zilla::Plugin::Git::Contributors" : "0.004",
             "Dist::Zilla::Plugin::Git::GatherDir" : "2.016",
             "Dist::Zilla::Plugin::GitHub::Update" : "0",
             "Dist::Zilla::Plugin::GithubMeta" : "0",
@@ -116,10 +116,10 @@
    "provides" : {
       "Test::Kwalitee" : {
          "file" : "lib/Test/Kwalitee.pm",
-         "version" : "1.20"
+         "version" : "1.21"
       }
    },
-   "release_status" : "testing",
+   "release_status" : "stable",
    "resources" : {
       "bugtracker" : {
          "mailto" : "bug-Test-Kwalitee@rt.cpan.org",
@@ -134,7 +134,7 @@
       "x_IRC" : "irc://irc.perl.org/#perl-qa",
       "x_MailingList" : "http://lists.perl.org/list/perl-qa.html"
    },
-   "version" : "1.20",
+   "version" : "1.21",
    "x_Dist_Zilla" : {
       "perl" : {
          "version" : "5.021002"
@@ -354,7 +354,7 @@
          {
             "class" : "Dist::Zilla::Plugin::Test::ReportPrereqs",
             "name" : "@Author::ETHER/Test::ReportPrereqs",
-            "version" : "0.018"
+            "version" : "0.019"
          },
          {
             "class" : "Dist::Zilla::Plugin::Test::Portability",
@@ -489,7 +489,7 @@
          {
             "class" : "Dist::Zilla::Plugin::ReadmeAnyFromPod",
             "name" : "@Author::ETHER/ReadmeAnyFromPod",
-            "version" : "0.142180"
+            "version" : "0.142250"
          },
          {
             "class" : "Dist::Zilla::Plugin::GithubMeta",
@@ -544,13 +544,13 @@
             "class" : "Dist::Zilla::Plugin::Git::Contributors",
             "config" : {
                "Dist::Zilla::Plugin::Git::Contributors" : {
-                  "include_authors" : "1",
-                  "include_releaser" : "0",
-                  "order_by" : "name"
+                  "include_authors" : "0",
+                  "include_releaser" : "1",
+                  "order_by" : "commits"
                }
             },
             "name" : "@Author::ETHER/Git::Contributors",
-            "version" : "0.004"
+            "version" : "0.006"
          },
          {
             "class" : "Dist::Zilla::Plugin::AutoPrereqs",
@@ -586,7 +586,7 @@
                }
             },
             "name" : "@Author::ETHER/MakeMaker::Fallback",
-            "version" : "0.011"
+            "version" : "0.013"
          },
          {
             "class" : "Dist::Zilla::Plugin::ModuleBuildTiny::Fallback",
@@ -774,7 +774,7 @@
                "Dist::Zilla::Plugin::Git::Tag" : {
                   "branch" : null,
                   "signed" : 0,
-                  "tag" : "v1.20-TRIAL",
+                  "tag" : "v1.21",
                   "tag_format" : "v%v%t",
                   "tag_message" : "v%v%t",
                   "time_zone" : "local"
@@ -913,7 +913,7 @@
       "zilla" : {
          "class" : "Dist::Zilla::Dist::Builder",
          "config" : {
-            "is_trial" : "1"
+            "is_trial" : "0"
          },
          "version" : "5.020"
       }
@@ -923,12 +923,11 @@
       "Dist::Zilla::Plugin::Test::Kwalitee" : "<= 2.04"
    },
    "x_contributors" : [
-      "David Steinbrunner <dsteinbrunner@pobox.com>",
       "Gavin Sherlock <sherlock@cpan.org>",
-      "Kenichi Ishigaki <ishigaki@cpan.org>",
+      "David Steinbrunner <dsteinbrunner@pobox.com>",
       "Nathan Haigh <nathanhaigh@ukonline.co.uk>",
       "Zoffix Znet <cpan@zoffix.com>",
-      "chromatic <chromatic@wgz.org>"
+      "Kenichi Ishigaki <ishigaki@cpan.org>"
    ]
 }
 

@@ -4,8 +4,8 @@ package Test::Kwalitee;
 BEGIN {
   $Test::Kwalitee::AUTHORITY = 'cpan:CHROMATIC';
 }
-# git description: v1.19-8-g5fdce72
-$Test::Kwalitee::VERSION = '1.20'; # TRIAL
+# git description: v1.20-TRIAL-1-g3cdf002
+$Test::Kwalitee::VERSION = '1.21';
 # ABSTRACT: Test the Kwalitee of a distribution before you release it
 # KEYWORDS: testing tests kwalitee CPANTS quality lint errors critic
 # vim: set ts=8 sw=4 tw=78 et :
@@ -140,7 +140,7 @@ Test::Kwalitee - Test the Kwalitee of a distribution before you release it
 
 =head1 VERSION
 
-version 1.20
+version 1.21
 
 =head1 SYNOPSIS
 
@@ -280,7 +280,7 @@ Does the distribution have tests?
 
 =item *
 
-metayml_conforms_to_known_spec
+meta_yml_conforms_to_known_spec
 
 =for stopwords recognised
 
@@ -290,9 +290,22 @@ L<http://module-build.sourceforge.net/META-spec-current.html>)
 
 =item *
 
-metayml_is_parsable
+meta_yml_is_parsable
 
 Can the F<META.yml> be parsed?
+
+=item *
+
+meta_json_conforms_to_known_spec
+
+Does META.json conform to the recognised META.json specification?
+(For specs see L<CPAN::Meta::Spec>)
+
+=item *
+
+meta_json_is_parsable
+
+Can the F<META.json> be parsed?
 
 =item *
 
@@ -388,13 +401,9 @@ the same terms as the Perl 5 programming language system itself.
 
 =head1 CONTRIBUTORS
 
-=for stopwords David Steinbrunner Gavin Sherlock Kenichi Ishigaki Nathan Haigh Zoffix Znet chromatic
+=for stopwords Gavin Sherlock David Steinbrunner Nathan Haigh Zoffix Znet Kenichi Ishigaki
 
 =over 4
-
-=item *
-
-David Steinbrunner <dsteinbrunner@pobox.com>
 
 =item *
 
@@ -402,7 +411,7 @@ Gavin Sherlock <sherlock@cpan.org>
 
 =item *
 
-Kenichi Ishigaki <ishigaki@cpan.org>
+David Steinbrunner <dsteinbrunner@pobox.com>
 
 =item *
 
@@ -414,7 +423,7 @@ Zoffix Znet <cpan@zoffix.com>
 
 =item *
 
-chromatic <chromatic@wgz.org>
+Kenichi Ishigaki <ishigaki@cpan.org>
 
 =back
 
